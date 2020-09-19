@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">HSE24</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="empty_catalogue">No products in this category, please select another one.</string>
+    <string name="loading_label">Load more articles</string>
+    <string name="action_filters">Filters</string>
+
+    <string name="action_cart">Cart</string>
+    <string name="empty_cart">No products in your Cart</string>
+    <string name="dialog_title">Deleting product</string>
+    <string name="dialog_message">Do you really want to delete this product?</string>
+
+    <string name="order">Order number</string>
+    <string name="description">Description</string>
+    <string name="details">Dimension &amp; details</string>
+    <string name="ratings">Ratings</string>
+    <string name="rating">Rating</string>
+    <string name="add_cart">Add to cart</string>
+    <string name="sold_out">Product is SOLD OUT</string>
+    <string name="adding_message">The Product is added to your Cart</string>
+    <string name="already_added">Added to your Cart</string>
+
+    <string name="network_error_msg">No Internet connection</string>
+    <string name="service_error_msg">UNAVAILABLE SERVICE. Please try later again.</string>
+
+</resources>

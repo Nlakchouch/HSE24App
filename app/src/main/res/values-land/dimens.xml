@@ -1,0 +1,28 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_product_radius">4dp</dimen>
+    <dimen name="product_cover_height">160dp</dimen>
+    <dimen name="product_title_padding">10dp</dimen>
+    <dimen name="brand_size">15sp</dimen>
+    <dimen name="songs_count_padding_bottom">5dp</dimen>
+    <dimen name="price_size">14sp</dimen>
+    <dimen name="old_price_size">10sp</dimen>
+    <dimen name="ic_product_overflow_width">20dp</dimen>
+    <dimen name="ic_product_overflow_height">30dp</dimen>
+    <dimen name="ic_product_overflow_margin_top">10dp</dimen>
+
+    <dimen name="recycleview_drawer_width">280dp</dimen>
+
+    <dimen name="product_image_height">360dp</dimen>
+    <dimen name="details_padding">15dp</dimen>
+    <dimen name="details_padding_top">10dp</dimen>
+    <dimen name="title_detail_size">20sp</dimen>
+    <dimen name="price_detail_size">20sp</dimen>
+
+    <dimen name="item_width">300dp</dimen>
+
+</resources>

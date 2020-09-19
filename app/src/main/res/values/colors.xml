@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#EA5B0C</color>
+    <color name="colorAccent">#FF8D3E</color>
+
+    <color name="black">#000000</color>
+
+    <color name="name_color">#252525</color>
+    <color name="pink">#B3145C</color>
+    <color name="clear_pink">#F4F3F8</color>
+    <color name="brand_color">#646C84</color>
+    <color name="orange">#EA5B0C</color>
+    <color name="cart_orange">#EA5C0A</color>
+
+</resources>
