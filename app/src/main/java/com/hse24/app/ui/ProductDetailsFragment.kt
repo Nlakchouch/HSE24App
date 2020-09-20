@@ -291,16 +291,15 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun loadProductData() {
-
         progressBar!!.visibility = View.VISIBLE
-
         val apiService: ApiInterface = ApiClient.getClient()!!.create(ApiInterface::class.java)
         val call: Call<ProductContainer> = apiService.getProductDetails(selectedSku!!)
 
         call.enqueue(object : Callback<ProductContainer> {
             override fun onResponse(call: Call<ProductContainer>, response: Response<ProductContainer>) {
-
                 progressBar!!.visibility = View.INVISIBLE
+
+                if (response.isSuccessful) {
                 val productDetails: ProductContainer? = response.body()
                 val productPrice: ProductPrice = productDetails!!.productPrice
                 val imageUriEntities: MutableList<ImageUriEntity> = ArrayList()
@@ -323,6 +322,7 @@ class ProductDetailsFragment : Fragment() {
                     )
                     mDatabase!!.imageDao().insertAll(imageUriEntities)
 
+                }
                 }
             }
 

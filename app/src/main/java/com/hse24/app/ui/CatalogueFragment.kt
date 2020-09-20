@@ -2,7 +2,6 @@ package com.hse24.app.ui
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
 import com.google.android.material.snackbar.Snackbar
 import com.hse24.app.AppExecutors
@@ -38,6 +36,7 @@ import com.hse24.app.rest.model.Paging
 import com.hse24.app.rest.model.Product
 import com.hse24.app.rest.ApiClient
 import com.hse24.app.rest.ApiInterface
+import com.hse24.app.utils.GridSpacingItemDecoration
 import com.hse24.app.utils.Hse24Utils
 import com.hse24.app.viewmodel.CartViewModel
 import com.hse24.app.viewmodel.CatalogueViewModel
@@ -127,7 +126,8 @@ class CatalogueFragment : Fragment() {
 
               recyclerView!!.layoutManager = mLayoutManager
               recyclerView!!.addItemDecoration(
-                  GridSpacingItemDecoration(resources.getInteger(R.integer.span_count),  Hse24Utils.dpToPx(requireActivity(),10), true))
+                  GridSpacingItemDecoration(resources.getInteger(R.integer.span_count),  Hse24Utils.dpToPx(requireActivity(),10), true)
+              )
               recyclerView!!.itemAnimator = DefaultItemAnimator()
 
           } else if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -344,39 +344,5 @@ class CatalogueFragment : Fragment() {
                 }
             }
         })
-    }
-
-    /**
-     * RecyclerView item decoration - give equal margin around grid item
-     */
-    class GridSpacingItemDecoration(
-        private val spanCount: Int,
-        private val spacing: Int,
-        private val includeEdge: Boolean
-    ) :
-        ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            val position = parent.getChildAdapterPosition(view)
-            val column = position % spanCount
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount
-                outRect.right = (column + 1) * spacing / spanCount
-                if (position < spanCount) {
-                    outRect.top = spacing
-                }
-                outRect.bottom = spacing
-            } else {
-                outRect.left = column * spacing / spanCount
-                outRect.right = spacing - (column + 1) * spacing / spanCount
-                if (position >= spanCount) {
-                    outRect.top = spacing
-                }
-            }
-        }
     }
 }

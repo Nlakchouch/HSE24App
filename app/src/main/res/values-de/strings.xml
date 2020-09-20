@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">HSE24</string>
+    <string name="navigation_drawer_open">Öffnen navigation drawer</string>
+    <string name="navigation_drawer_close">Schließen navigation drawer</string>
+
+    <string name="empty_catalogue">Keine Produkte in dieser Kategorie, bitte wählen Sie ein anderes aus</string>
+    <string name="loading_label">Weitere Artikel laden</string>
+    <string name="euro">€</string>
+    <string name="symbol">%</string>
+
+    <string name="action_basket">Korb</string>
+    <string name="empty_basket">Keine Produkte in Ihrem Warenkorb</string>
+    <string name="dialog_title">Produkt löschen</string>
+    <string name="dialog_message">Möchten Sie dieses Produkt wirklich löschen?</string>
+
+    <string name="order">Bestellnummer</string>
+    <string name="description">Beschreibung</string>
+    <string name="details">Abmessungen &amp; Einzelheiten</string>
+    <string name="ratings">Bewertungen</string>
+    <string name="rating">Bewertung</string>
+    <string name="add_cart">Zum Warenkorb hinzufügen</string>
+    <string name="sold_out">Produkt ist AUSVERKAUFT</string>
+    <string name="adding_message">Das Produkt wird Ihrem Warenkorb hinzugefügt</string>
+    <string name="already_added">In den Warenkorb gelegt</string>
+
+    <string name="network_error_msg">Keine Internetverbindung</string>
+    <string name="service_error_msg">NICHT VERFÜGBARER SERVICE. Bitte versuchen Sie es später noch einmal</string>
+
+</resources>

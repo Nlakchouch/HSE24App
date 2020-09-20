@@ -11,9 +11,4 @@ object Config {
 
     //The necessary parameters to construct the Exchange Rates History URL
     const val HSE24_IMAGE_PARAM = "pics480.jpg"
-
-    //The SharedPreferences Keys
-    const val PREFERENCE_NAME = "hse24_preference"
-    const val PREFERENCE_CURRENCY = "pr_currency"
-    const val PREFERENCE_POSITION = "pr_position"
 }

@@ -1,7 +1,6 @@
 package com.hse24.app.ui
 
 import android.content.res.Configuration
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +15,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
 import com.hse24.app.R
 import com.hse24.app.adapter.BasketAdapter
 import com.hse24.app.db.entity.ProductEntity
+import com.hse24.app.utils.GridSpacingItemDecoration
 import com.hse24.app.utils.Hse24Utils
 import com.hse24.app.viewmodel.CartViewModel
 
@@ -87,39 +86,5 @@ class BasketFragment : Fragment() {
                     adapter!!.notifyDataSetChanged()
                 }
             })
-    }
-
-    /**
-     * RecyclerView item decoration - give equal margin around grid item
-     */
-    class GridSpacingItemDecoration(
-        private val spanCount: Int,
-        private val spacing: Int,
-        private val includeEdge: Boolean
-    ) :
-        ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            val position = parent.getChildAdapterPosition(view)
-            val column = position % spanCount
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount
-                outRect.right = (column + 1) * spacing / spanCount
-                if (position < spanCount) {
-                    outRect.top = spacing
-                }
-                outRect.bottom = spacing
-            } else {
-                outRect.left = column * spacing / spanCount
-                outRect.right = spacing - (column + 1) * spacing / spanCount
-                if (position >= spanCount) {
-                    outRect.top = spacing
-                }
-            }
-        }
     }
 }
