@@ -60,7 +60,7 @@ class CatalogueAdapter(private val mContext: Context, private val productList: L
 
         if (!TextUtils.isEmpty(catalogue.percentDiscount)) {
             holder.discount.visibility = View.VISIBLE
-            holder.discount.text = "-%s".format(catalogue.percentDiscount) + "%"
+            holder.discount.text = "-%s%s".format(catalogue.percentDiscount, mContext.getString(R.string.symbol))
         } else {
             holder.discount.visibility = View.INVISIBLE
         }

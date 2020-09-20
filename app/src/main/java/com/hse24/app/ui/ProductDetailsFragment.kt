@@ -231,7 +231,7 @@ class ProductDetailsFragment : Fragment() {
                     }
 
                     if (!TextUtils.isEmpty(myProduct.percentDiscount)) {
-                        productDiscount!!.text = "-%s".format(myProduct.percentDiscount) + "%"
+                        productDiscount!!.text = "-%s%s".format(myProduct.percentDiscount, getString(R.string.symbol)) + "%"
                         productDiscount!!.visibility = View.VISIBLE
                     } else {
                         productDiscount!!.visibility = View.INVISIBLE
