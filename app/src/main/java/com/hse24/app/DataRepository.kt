@@ -88,4 +88,8 @@ class DataRepository @Inject constructor(private val database: AppDatabase) {
         return database.categoryCountDao().loadCategoryCount(categoryId)
     }
 
+    fun getProductVariation(productSku: String) : LiveData<List<VariationEntity>> {
+        return database.variationDao().loadProductVariations(productSku)
+    }
+
 }

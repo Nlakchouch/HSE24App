@@ -13,8 +13,8 @@ import com.hse24.app.db.dao.*
 import com.hse24.app.db.entity.*
 
 @Database(
-    entities = [CategoryEntity::class, ImageUriEntity::class, ProductEntity::class, CartEntity::class, CategoryCountEntity::class],
-    version = 14
+    entities = [CategoryEntity::class, ImageUriEntity::class, ProductEntity::class, CartEntity::class, CategoryCountEntity::class, VariationEntity::class],
+    version = 16
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -23,6 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun imageDao(): ImageDao
     abstract fun cartDao(): CartDao
     abstract fun categoryCountDao(): CategoryCountDao
+    abstract fun variationDao(): VariationDao
 
     private val mIsDatabaseCreated = MutableLiveData<Boolean>()
 

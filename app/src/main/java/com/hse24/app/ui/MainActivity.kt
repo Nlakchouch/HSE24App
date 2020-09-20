@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
 
         setContentView(R.layout.activity_main)
        //Forcing the
-        if (AppUtils.isTablet(this)) {
+        if (UiUtils.isTablet(this)) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
@@ -76,15 +76,8 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
 
         if (findViewById<View?>(R.id.drawer_layout) != null){
             mTwoPanel = false
-            drawer      = findViewById(R.id.drawer_layout)
-
-            val toggle = ActionBarDrawerToggle(
-                this,
-                drawer,
-                toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close
-            )
+            drawer  = findViewById(R.id.drawer_layout)
+            val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
             drawer.addDrawerListener(toggle)
             toggle.syncState()
         }else{
@@ -93,16 +86,11 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
 
         if (savedInstanceState != null) {
             //Restore the fragment's instance
-            categoryFragment = supportFragmentManager.getFragment(
-                savedInstanceState,
-                CategoryListFragment.TAG
-            )
-            catalogueFragment = supportFragmentManager.getFragment(
-                savedInstanceState,
-                CatalogueFragment.TAG
-            )
+            categoryFragment = supportFragmentManager.getFragment(savedInstanceState, CategoryListFragment.TAG)
+            catalogueFragment = supportFragmentManager.getFragment(savedInstanceState, CatalogueFragment.TAG)
             selectedCategoryId = savedInstanceState.getInt("category")
             Log.v("SavedInstance", "" + selectedCategoryId)
+
         } else {
             categoryFragment = CategoryListFragment()
             supportFragmentManager.beginTransaction()
@@ -116,16 +104,8 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         //Save the fragment's instance
-        supportFragmentManager.putFragment(
-            savedInstanceState,
-            CategoryListFragment.TAG,
-            categoryFragment!!
-        )
-        supportFragmentManager.putFragment(
-            savedInstanceState,
-            CatalogueFragment.TAG,
-            catalogueFragment!!
-        )
+        supportFragmentManager.putFragment(savedInstanceState, CategoryListFragment.TAG, categoryFragment!!)
+        supportFragmentManager.putFragment(savedInstanceState, CatalogueFragment.TAG, catalogueFragment!!)
         savedInstanceState.putInt("category", selectedCategoryId!!)
     }
 
@@ -156,50 +136,32 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
         progressBar.visibility = View.VISIBLE
 
         call.enqueue(object : Callback<CategoryContainer> {
-            override fun onResponse(
-                call: Call<CategoryContainer>,
-                response: Response<CategoryContainer>
-            ) {
+            override fun onResponse(call: Call<CategoryContainer>, response: Response<CategoryContainer>) {
                 Log.v(TAG, "" + response.code())
+                progressBar.visibility = View.GONE
 
                 if (response.isSuccessful) {
-                    progressBar.visibility = View.GONE
-
                     val categories: List<MainCategory> = response.body()!!.children
-                    val categoryEntities: MutableList<CategoryEntity> =
-                        mutableListOf()
+                    val categoryEntities: MutableList<CategoryEntity> = mutableListOf()
 
                     val rnd = Random()
                     val randomBound = categories.size - 1
                     if (selectedCategoryId == 0)
                         selectedCategoryId = categories[rnd.nextInt(randomBound)].categoryId
 
-
                     for (i in categories.indices) {
                         val mainCategory: MainCategory = categories[i]
-
                         for (j in mainCategory.children.indices) {
-
                             val category: Category = mainCategory.children[j]
                             val categoryEntity = CategoryEntity(category, mainCategory.categoryId)
                             categoryEntities.add(categoryEntity)
                         }
-                        categoryEntities.add(
-                            CategoryEntity(
-                                mainCategory.categoryId,
-                                mainCategory.displayName,
-                                0
-                            )
-                        )
+                        categoryEntities.add(CategoryEntity(mainCategory.categoryId, mainCategory.displayName, 0))
                     }
-
                     appExecutors.diskIO().execute {
                         mDatabase.categoryDao().insertAll(categoryEntities)
                     }
-
                     changeCatalogue(selectedCategoryId!!)
-                    progressBar.visibility = View.INVISIBLE
-
                 }else {
                     UiUtils.showSnackBar(this@MainActivity, getString(R.string.service_error_msg))
                 }

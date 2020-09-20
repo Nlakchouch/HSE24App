@@ -31,11 +31,10 @@ class CategoryListFragment : Fragment() {
 
     private var recyclerView: RecyclerView? = null
     private var categoryAdapter: CategoryAdapter? = null
-    private var menuItemList: MutableList<ParentObject> = ArrayList()
+    private var menuItemList: MutableList<ParentObject> = mutableListOf()
     private var mCategoryCallback: OnCategoryListener? = null
 
-    private val onCategoryClickListener =
-        View.OnClickListener { v ->
+    private val onCategoryClickListener = View.OnClickListener { v ->
             val idCategory: Int = (v.getTag(R.id.tag_content) as CategoryItem).id
             Log.v("categorySelected", "" + idCategory)
             categoryAdapter!!.setSelection(idCategory)
@@ -63,11 +62,12 @@ class CategoryListFragment : Fragment() {
         super.onDetach()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onDestroyView() {
+        categoryAdapter = null
+        super.onDestroyView()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root: View = inflater.inflate(R.layout.fragment_category_list, container, false)
         recyclerView = root.findViewById<View>(R.id.recycler_view) as RecyclerView
         recyclerView!!.layoutManager = LinearLayoutManager(activity)
@@ -82,31 +82,24 @@ class CategoryListFragment : Fragment() {
 
     private fun subscribeUi(liveData: LiveData<List<CategoryEntity>>) {
         // Update the list when the data changes
-        liveData.observe(
-            viewLifecycleOwner,
-            Observer<List<CategoryEntity>> { myCategories: List<CategoryEntity>? ->
+        liveData.observe(viewLifecycleOwner, Observer<List<CategoryEntity>> { myCategories: List<CategoryEntity>? ->
                 if (myCategories != null) {
-                    menuItemList = ArrayList()
+                    menuItemList !!.clear()
                     for (i in myCategories.indices) {
                         val mainCategoryEntity = myCategories[i]
                         if (mainCategoryEntity.parentId == 0) {
-                            val listSubCategory: MutableList<Any> = ArrayList()
+                            val listSubCategory: MutableList<Any> = mutableListOf()
+
                             myCategories.indices.forEach { j ->
                                 val subcategoryEntity: CategoryEntity = myCategories[j]
                                 if (subcategoryEntity.parentId == mainCategoryEntity.categoryId) {
                                     listSubCategory.add(
-                                        CategoryItem(
-                                            subcategoryEntity.name,
-                                            subcategoryEntity.categoryId
-                                        )
+                                        CategoryItem(subcategoryEntity.name, subcategoryEntity.categoryId)
                                     )
                                 }
                             }
-                            val categoryItem =
-                                CategoryItem(
-                                    mainCategoryEntity.name,
-                                    mainCategoryEntity.categoryId
-                                )
+
+                            val categoryItem = CategoryItem(mainCategoryEntity.name, mainCategoryEntity.categoryId)
                             categoryItem.childObjectList = listSubCategory
                             menuItemList.add(categoryItem)
                         }
@@ -116,10 +109,5 @@ class CategoryListFragment : Fragment() {
                     recyclerView!!.adapter = categoryAdapter
                 }
             })
-    }
-
-    override fun onDestroyView() {
-        categoryAdapter = null
-        super.onDestroyView()
     }
 }

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
     "averageStars",
     "reviewers",
     "productPrice",
+    "variations",
     "brandId",
     "reviewsForbidden",
     "brandNameShort",
@@ -83,6 +84,11 @@ data class ProductContainer (
     @set:JsonProperty("productPrice")
     @JsonProperty("productPrice")
     var productPrice: ProductPrice,
+
+    @get:JsonProperty("variations")
+    @set:JsonProperty("variations")
+    @JsonProperty("variations")
+    var variations: List<Variation> = ArrayList(),
 
     @get:JsonProperty("brandId")
     @set:JsonProperty("brandId")

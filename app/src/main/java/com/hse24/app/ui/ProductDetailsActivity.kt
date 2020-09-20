@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
 import com.hse24.app.R
-import com.hse24.app.utils.AppUtils
+import com.hse24.app.utils.UiUtils
 
 class ProductDetailsActivity : AppCompatActivity() {
 
@@ -20,7 +20,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         //Forcing the
-        if (AppUtils.isTablet(this)) {
+        if (UiUtils.isTablet(this)) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
         initActionBar()

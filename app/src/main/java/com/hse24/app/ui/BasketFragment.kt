@@ -20,7 +20,6 @@ import com.hse24.app.R
 import com.hse24.app.adapter.BasketAdapter
 import com.hse24.app.db.entity.ProductEntity
 import com.hse24.app.utils.GridSpacingItemDecoration
-import com.hse24.app.utils.AppUtils
 import com.hse24.app.utils.UiUtils
 import com.hse24.app.viewmodel.CartViewModel
 
@@ -41,7 +40,7 @@ class BasketFragment : Fragment() {
         emptyTxt = root.findViewById(R.id.cart_empty)
         recyclerView = root.findViewById(R.id.cart_recycler)
 
-        if (AppUtils.isTablet(requireActivity())) {
+        if (UiUtils.isTablet(requireActivity())) {
             val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
             recyclerView!!.layoutManager = mLayoutManager
             recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart), UiUtils.dpToPx(requireActivity(),10), true))
@@ -71,9 +70,8 @@ class BasketFragment : Fragment() {
     }
 
     private fun subscribeUi(liveData: LiveData<List<ProductEntity>>) {
-        liveData.observe(
-            viewLifecycleOwner,
-            Observer<List<ProductEntity>> { myProducts: List<ProductEntity>? ->
+        liveData.observe(viewLifecycleOwner, Observer<List<ProductEntity>> { myProducts: List<ProductEntity>? ->
+
                 if (myProducts != null && myProducts.isNotEmpty()) {
                     cartList!!.clear()
                     for (i in myProducts.indices) {

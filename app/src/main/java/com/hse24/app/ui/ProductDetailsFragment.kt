@@ -3,8 +3,10 @@ package com.hse24.app.ui
 import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.Html
 import android.text.TextUtils
 import android.util.Log
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 
 import com.hse24.app.AppExecutors
+import com.hse24.app.Config
 import com.hse24.app.R
 import com.hse24.app.adapter.ImagesAdapter
 import com.hse24.app.db.AppDatabase
@@ -28,8 +31,8 @@ import com.hse24.app.db.SumCart
 import com.hse24.app.db.entity.CartEntity
 import com.hse24.app.db.entity.ImageUriEntity
 import com.hse24.app.db.entity.ProductEntity
+import com.hse24.app.db.entity.VariationEntity
 import com.hse24.app.rest.model.ProductContainer
-import com.hse24.app.rest.model.ProductPrice
 import com.hse24.app.rest.ApiClient
 import com.hse24.app.rest.ApiInterface
 import com.hse24.app.utils.AppUtils
@@ -71,7 +74,6 @@ class ProductDetailsFragment : Fragment() {
 
     private var mDatabase: AppDatabase? = null
     private val pagerSnapHelper = PagerSnapHelper()
-    private val handler = Handler()
 
     @Inject
     private lateinit var appExecutors: AppExecutors
@@ -140,9 +142,9 @@ class ProductDetailsFragment : Fragment() {
                     productDetailViewModel.getImageUris(),
                     productDetailViewModel.getCartByProduct())
 
-        val runnable = Runnable { setupBadge(productDetailViewModel.getCartTotal()) }
-        handler.postAtTime(runnable, System.currentTimeMillis() + 300)
-        handler.postDelayed(runnable, 300)
+        Handler(Looper.getMainLooper()).postDelayed({
+                setupBadge(productDetailViewModel.getCartTotal())
+        }, 300)
 
         cartButton!!.setOnClickListener {
 
@@ -196,14 +198,18 @@ class ProductDetailsFragment : Fragment() {
                     orderProduct!!.text = "  %s  %s".format(getString(R.string.order), myProduct.sku)
                     ratingBar!!.rating = myProduct.averageStars.toFloat()
 
-                    if (myProduct.longDescription != null) {
-                        descProduct!!.text = Html.fromHtml(myProduct.longDescription)
+                    if (!TextUtils.isEmpty(myProduct.longDescription)) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            descProduct!!.text = Html.fromHtml(myProduct.longDescription, Html.FROM_HTML_MODE_LEGACY)
+                        } else {
+                            descProduct!!.text = Html.fromHtml(myProduct.longDescription)
+                        }
                         descriptionLbl!!.visibility = View.VISIBLE
                     } else {
                         descriptionLbl!!.visibility = View.INVISIBLE
                     }
 
-                    if (myProduct.additionalInformation != null) {
+                    if (!TextUtils.isEmpty(myProduct.additionalInformation)) {
                         //productDimensions.setText(Html.fromHtml(productDetails.getAdditionalInformation()));
                         webView!!.loadData(myProduct.additionalInformation, "text/html", "UTF-8")
                         dimensionLbl!!.visibility = View.VISIBLE
@@ -214,19 +220,19 @@ class ProductDetailsFragment : Fragment() {
                     if (myProduct.reviewers > 1) {
                         ratingsProduct!!.text = "%d %s".format(myProduct.reviewers, getString(R.string.ratings))
                         ratingsProduct!!.visibility = View.VISIBLE
-                    } else if (myProduct.reviewers === 1) {
+                    } else if (myProduct.reviewers == 1) {
                         ratingsProduct!!.text = "%d %s".format(myProduct.reviewers, getString(R.string.rating))
                         ratingsProduct!!.visibility = View.VISIBLE
                     }
 
                     if (!TextUtils.isEmpty(myProduct.percentDiscount)) {
-                        productDiscount!!.text = "-%s%s".format(myProduct.percentDiscount, getString(R.string.symbol)) + "%"
+                        productDiscount!!.text = "-%s%s".format(myProduct.percentDiscount, getString(R.string.symbol))
                         productDiscount!!.visibility = View.VISIBLE
                     } else {
                         productDiscount!!.visibility = View.INVISIBLE
                     }
 
-                    if (myProduct.referencePrice != null && myProduct.referencePrice > 0) {
+                    if (myProduct.referencePrice > 0) {
                         productOldPrice!!.text = "%s %.2f".format(getString(R.string.euro), myProduct.referencePrice)
                         productOldPrice!!.visibility = View.VISIBLE
                         productOldPrice!!.paintFlags = productOldPrice!!.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -234,10 +240,9 @@ class ProductDetailsFragment : Fragment() {
                 }
             })
 
-        liveImageData.observe(
-            viewLifecycleOwner,
-            Observer<List<ImageUriEntity?>> { productImages: List<ImageUriEntity?>? ->
-                if (productImages != null && productImages.isNotEmpty()) {
+        liveImageData.observe(viewLifecycleOwner, Observer<List<ImageUriEntity?>> { productImages: List<ImageUriEntity?> ->
+
+                if (productImages.isNotEmpty()) {
                     mAdapter = ImagesAdapter(requireActivity(), productImages as List<ImageUriEntity>)
                     recyclerView!!.adapter = mAdapter
                     if (productImages.size > 1) {
@@ -249,9 +254,7 @@ class ProductDetailsFragment : Fragment() {
                 }
             })
 
-        liveCartData.observe(
-            viewLifecycleOwner,
-            Observer<CartEntity> { cartEntity: CartEntity? ->
+        liveCartData.observe(viewLifecycleOwner, Observer<CartEntity> { cartEntity: CartEntity? ->
                 if (cartEntity != null) {
                     cartButton!!.text = getString(R.string.already_added)
                     cartButton!!.isEnabled = false
@@ -268,7 +271,7 @@ class ProductDetailsFragment : Fragment() {
             Log.v("cartDetails", "" + sumCart.total)
             requireActivity().runOnUiThread {
                 if (textCartItem != null) {
-                    if (sumCart.total === 0) {
+                    if (sumCart.total == 0) {
                         textCartItem!!.visibility = View.GONE
                     } else {
                         textCartItem!!.text = java.lang.String.valueOf(sumCart.total)
@@ -290,13 +293,20 @@ class ProductDetailsFragment : Fragment() {
 
                 if (response.isSuccessful) {
                     val productDetails: ProductContainer? = response.body()
-                    val productPrice: ProductPrice = productDetails!!.productPrice
-                    val imageUriEntities: MutableList<ImageUriEntity> = ArrayList()
+                    val imageUriEntities: MutableList<ImageUriEntity> = mutableListOf()
+                    val variationEntities: MutableList<VariationEntity> = mutableListOf()
 
-                  for (j in productDetails.imageUris.indices) {
-                    val imageEntity = ImageUriEntity(productDetails.sku, productDetails.imageUris[j])
-                    imageUriEntities.add(imageEntity)
-                  }
+                    for (i in productDetails!!.imageUris.indices) {
+                        val imageEntity = ImageUriEntity(productDetails.sku, productDetails.imageUris[i])
+                        imageUriEntities.add(imageEntity)
+                    }
+
+                    for (j in productDetails!!.variations.indices) {
+                        if(productDetails!!.variations[j].status.equals(Config.SELLABLE_STATUS)){
+                           val variationEntity = VariationEntity(productDetails.sku, productDetails!!.variations[j])
+                           variationEntities.add(variationEntity)
+                        }
+                    }
 
                   appExecutors.diskIO().execute {
                     mDatabase!!.productDao().updateProduct(
@@ -309,7 +319,8 @@ class ProductDetailsFragment : Fragment() {
                         productDetails.stockAmount,
                         selectedSku
                     )
-                    mDatabase!!.imageDao().insertAll(imageUriEntities)
+                      mDatabase!!.imageDao().insertAll(imageUriEntities)
+                      mDatabase!!.variationDao().insertAll(variationEntities)
                   }
                 }else{
                     UiUtils.showSnackBar(requireActivity(), getString(R.string.service_error_msg))

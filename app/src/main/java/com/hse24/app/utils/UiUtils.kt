@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.TypedValue
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
+import com.hse24.app.R
 import kotlin.math.roundToInt
 
 object UiUtils {
@@ -13,6 +14,10 @@ object UiUtils {
             context.findViewById(android.R.id.content),
             msg, Snackbar.LENGTH_SHORT)
         snackbar.show()
+    }
+
+    fun isTablet(context: Context): Boolean {
+        return context.resources.getBoolean(R.bool.is_tablet)
     }
 
     /**

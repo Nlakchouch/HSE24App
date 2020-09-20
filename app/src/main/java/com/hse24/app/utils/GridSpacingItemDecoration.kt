@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-
 /**
  * RecyclerView item decoration - give equal margin around grid item
  */

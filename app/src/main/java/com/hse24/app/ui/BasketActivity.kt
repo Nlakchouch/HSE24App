@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
 import com.hse24.app.R
-import com.hse24.app.utils.AppUtils
+import com.hse24.app.utils.UiUtils
 
 class BasketActivity : AppCompatActivity() {
 
@@ -18,7 +18,7 @@ class BasketActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_basket)
         //Forcing the
-        if (AppUtils.isTablet(this)) {
+        if (UiUtils.isTablet(this)) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 

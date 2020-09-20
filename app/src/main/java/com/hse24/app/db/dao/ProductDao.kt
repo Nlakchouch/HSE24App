@@ -30,4 +30,7 @@ interface ProductDao {
         stockAmount: Int,
         sku: String?
     )
+
+    @Query("DELETE FROM Products where categoryId = :categoryId")
+    fun deleteCategoryProducts(categoryId: Int)
 }
