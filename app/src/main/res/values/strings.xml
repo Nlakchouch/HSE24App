@@ -6,6 +6,7 @@
     <string name="empty_catalogue">No products in this category, please select another one.</string>
     <string name="loading_label">Load more articles</string>
     <string name="action_filters">Filters</string>
+    <string name="euro">€</string>
 
     <string name="action_cart">Cart</string>
     <string name="empty_cart">No products in your Cart</string>

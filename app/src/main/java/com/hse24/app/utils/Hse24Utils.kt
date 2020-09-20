@@ -7,11 +7,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.util.Log
+import android.util.TypedValue
+
 import com.hse24.app.R
+
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.StandardCharsets
+import kotlin.math.roundToInt
 
 /**
  * Created by LAKCHOUCH NAOUFAL on 01/09/20.
@@ -98,5 +102,16 @@ object Hse24Utils {
             // handle exception
         }
         return bitmap
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    fun dpToPx(context: Context, dp: Int): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+            context.resources.displayMetrics
+        ).roundToInt()
     }
 }

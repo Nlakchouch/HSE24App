@@ -14,16 +14,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-import com.hse24.app.adapter.CategoryAdapter;
-import com.hse24.app.db.entity.CategoryEntity;
-import com.hse24.app.model.CategoryItem;
-import com.hse24.app.viewmodel.CategoryListViewModel;
+import com.hse24.app.adapter.CategoryAdapter
+import com.hse24.app.db.entity.CategoryEntity
+import com.hse24.app.adapter.model.CategoryItem
+import com.hse24.app.viewmodel.CategoryListViewModel
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject
 import com.hse24.app.R
 import java.util.*
 
 class CategoryListFragment : Fragment() {
+
+    companion object {
+        val TAG = CategoryListFragment::class.simpleName.toString()
+    }
 
     private var recyclerView: RecyclerView? = null
     private var categoryAdapter: CategoryAdapter? = null
@@ -35,11 +39,11 @@ class CategoryListFragment : Fragment() {
             val idCategory: Int = (v.getTag(R.id.tag_content) as CategoryItem).id
             Log.v("categorySelected", "" + idCategory)
             categoryAdapter!!.setSelection(idCategory)
-            mCategoryCallback!!.OnClick(idCategory)
+            mCategoryCallback!!.onClick(idCategory)
         }
 
     interface OnCategoryListener {
-        fun OnClick(categoryId: Int)
+        fun onClick(categoryId: Int)
     }
 
     override fun onAttach(context: Context) {
@@ -57,10 +61,6 @@ class CategoryListFragment : Fragment() {
     override fun onDetach() {
         mCategoryCallback = null
         super.onDetach()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -102,10 +102,11 @@ class CategoryListFragment : Fragment() {
                                     )
                                 }
                             }
-                            val categoryItem = CategoryItem(
-                                mainCategoryEntity.name,
-                                mainCategoryEntity.categoryId
-                            )
+                            val categoryItem =
+                                CategoryItem(
+                                    mainCategoryEntity.name,
+                                    mainCategoryEntity.categoryId
+                                )
                             categoryItem.childObjectList = listSubCategory
                             menuItemList.add(categoryItem)
                         }
@@ -120,9 +121,5 @@ class CategoryListFragment : Fragment() {
     override fun onDestroyView() {
         categoryAdapter = null
         super.onDestroyView()
-    }
-
-    companion object {
-        val TAG = CategoryListFragment::class.java.simpleName
     }
 }

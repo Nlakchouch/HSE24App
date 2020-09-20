@@ -8,6 +8,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+
 import com.hse24.app.db.dao.*
 import com.hse24.app.db.entity.*
 
@@ -43,11 +44,6 @@ abstract class AppDatabase : RoomDatabase() {
             return sInstance
         }
 
-        /**
-         * Build the database. [Builder.build] only sets up the database configuration and
-         * creates a new instance of the database.
-         * The SQLite database is only created when it's accessed for the first time.
-         */
         private fun buildDatabase(appContext: Context): AppDatabase {
             return Room.databaseBuilder(appContext, AppDatabase::class.java, DATABASE_NAME)
                 .allowMainThreadQueries()

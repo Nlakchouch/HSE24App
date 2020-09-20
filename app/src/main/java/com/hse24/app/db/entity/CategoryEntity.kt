@@ -5,7 +5,7 @@ import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-import com.hse24.app.model.Category
+import com.hse24.app.rest.model.Category
 
 @Entity(tableName = "Categories", indices = [Index(value = ["categoryId"], unique = true)])
 data class CategoryEntity (

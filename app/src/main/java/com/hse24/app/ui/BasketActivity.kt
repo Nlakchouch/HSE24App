@@ -5,17 +5,18 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+
 import com.hse24.app.R
 import com.hse24.app.utils.Hse24Utils
 
-class CartActivity : AppCompatActivity() {
+class BasketActivity : AppCompatActivity() {
 
     private var mFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cart)
+        setContentView(R.layout.activity_basket)
         //Forcing the
         if (Hse24Utils.isTablet(this)) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -26,11 +27,11 @@ class CartActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         if (savedInstanceState != null) {
             //Restore the fragment's instance
-            mFragment = fragmentManager.getFragment(savedInstanceState, CartFragment.TAG)
+            mFragment = fragmentManager.getFragment(savedInstanceState, BasketFragment.TAG)
         } else {
-            mFragment = CartFragment()
+            mFragment = BasketFragment()
             fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, mFragment!!, CartFragment.TAG)
+                .replace(R.id.fragment_container, mFragment!!, BasketFragment.TAG)
                 .commitAllowingStateLoss()
             fragmentManager.executePendingTransactions()
         }
@@ -39,7 +40,7 @@ class CartActivity : AppCompatActivity() {
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         //Save the fragment's instance
-        supportFragmentManager.putFragment(savedInstanceState, CartFragment.TAG, mFragment!!)
+        supportFragmentManager.putFragment(savedInstanceState, BasketFragment.TAG, mFragment!!)
     }
 
     private fun initActionBar() {

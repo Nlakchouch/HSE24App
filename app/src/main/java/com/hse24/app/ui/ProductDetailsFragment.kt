@@ -30,8 +30,8 @@ import com.hse24.app.db.SumCart
 import com.hse24.app.db.entity.CartEntity
 import com.hse24.app.db.entity.ImageUriEntity
 import com.hse24.app.db.entity.ProductEntity
-import com.hse24.app.model.ProductContainer
-import com.hse24.app.model.ProductPrice
+import com.hse24.app.rest.model.ProductContainer
+import com.hse24.app.rest.model.ProductPrice
 import com.hse24.app.rest.ApiClient
 import com.hse24.app.rest.ApiInterface
 import com.hse24.app.utils.Hse24Utils
@@ -43,7 +43,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-import java.util.*
 import javax.inject.Inject
 
 class ProductDetailsFragment : Fragment() {
@@ -79,7 +78,7 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var appExecutors: AppExecutors
 
     companion object {
-        val TAG = ProductDetailsFragment::class.java.simpleName
+        val TAG = ProductDetailsFragment::class.simpleName.toString()
         fun newInstance(sku: String?) = ProductDetailsFragment().apply {
             val frag = ProductDetailsFragment()
             val args = Bundle()
@@ -127,7 +126,7 @@ class ProductDetailsFragment : Fragment() {
         recyclerView!!.layoutManager = layoutManager
         pagerSnapHelper.attachToRecyclerView(recyclerView)
 
-        ApplyFont()
+        applyFont()
         loadProductData()
 
         return root
@@ -146,14 +145,14 @@ class ProductDetailsFragment : Fragment() {
         handler.postAtTime(runnable, System.currentTimeMillis() + 300)
         handler.postDelayed(runnable, 300)
 
-        cartButton!!.setOnClickListener { _: View? ->
+        cartButton!!.setOnClickListener {
 
             if (productEntity != null && productEntity!!.stockAmount > 0) {
 
-                appExecutors.diskIO().execute(Runnable {
+                appExecutors.diskIO().execute {
                     val cartEntity = CartEntity(productEntity!!.sku, 1)
                     mDatabase!!.cartDao().insertAll(cartEntity)
-                })
+                }
 
                 val snackbar = Snackbar.make(requireActivity().findViewById(android.R.id.content),
                     getString(R.string.adding_message),
@@ -190,7 +189,7 @@ class ProductDetailsFragment : Fragment() {
         val menuItem = menu.findItem(R.id.action_cart)
         val actionView = menuItem.actionView
         textCartItem = actionView.findViewById<View>(R.id.cart_badge) as TextView
-        actionView.setOnClickListener { startActivity(Intent(activity, CartActivity::class.java)) }
+        actionView.setOnClickListener { startActivity(Intent(activity, BasketActivity::class.java)) }
     }
 
     private fun subscribeUi(liveData: LiveData<ProductEntity>,
@@ -204,9 +203,9 @@ class ProductDetailsFragment : Fragment() {
                     detailsLayout!!.visibility = View.VISIBLE
                     brandProduct!!.text = myProduct.brandNameLong
                     nameProduct!!.text = myProduct.nameShort
-                    priceProduct!!.text = java.lang.String.format(Locale.ENGLISH, "€ %.2f", myProduct.price)
-                    orderProduct!!.text = java.lang.String.format(Locale.ENGLISH, "  %s  %s", getString(R.string.order), myProduct.sku)
-                    ratingBar!!.rating = myProduct!!.averageStars.toFloat()
+                    priceProduct!!.text = "%s %.2f".format(getString(R.string.euro), myProduct.price)
+                    orderProduct!!.text = "  %s  %s".format(getString(R.string.order), myProduct.sku)
+                    ratingBar!!.rating = myProduct.averageStars.toFloat()
 
                     if (myProduct.longDescription != null) {
                         descProduct!!.text = Html.fromHtml(myProduct.longDescription)
@@ -217,29 +216,29 @@ class ProductDetailsFragment : Fragment() {
 
                     if (myProduct.additionalInformation != null) {
                         //productDimensions.setText(Html.fromHtml(productDetails.getAdditionalInformation()));
-                        webView!!.loadData(myProduct!!.additionalInformation, "text/html", "UTF-8")
+                        webView!!.loadData(myProduct.additionalInformation, "text/html", "UTF-8")
                         dimensionLbl!!.visibility = View.VISIBLE
                     } else {
                         dimensionLbl!!.visibility = View.INVISIBLE
                     }
 
                     if (myProduct.reviewers > 1) {
-                        ratingsProduct!!.text = java.lang.String.format(Locale.ENGLISH, "%d %s", myProduct.reviewers, getString(R.string.ratings))
+                        ratingsProduct!!.text = "%d %s".format(myProduct.reviewers, getString(R.string.ratings))
                         ratingsProduct!!.visibility = View.VISIBLE
                     } else if (myProduct.reviewers === 1) {
-                        ratingsProduct!!.text = java.lang.String.format(Locale.ENGLISH, "%d %s", myProduct.reviewers, getString(R.string.rating))
+                        ratingsProduct!!.text = "%d %s".format(myProduct.reviewers, getString(R.string.rating))
                         ratingsProduct!!.visibility = View.VISIBLE
                     }
 
                     if (!TextUtils.isEmpty(myProduct.percentDiscount)) {
-                        productDiscount!!.text = java.lang.String.format(Locale.ENGLISH, "-%s",myProduct.percentDiscount).toString() + "%"
+                        productDiscount!!.text = "-%s".format(myProduct.percentDiscount) + "%"
                         productDiscount!!.visibility = View.VISIBLE
                     } else {
                         productDiscount!!.visibility = View.INVISIBLE
                     }
 
                     if (myProduct.referencePrice != null && myProduct.referencePrice > 0) {
-                        productOldPrice!!.text = java.lang.String.format(Locale.ENGLISH, "€ %.2f", myProduct.referencePrice)
+                        productOldPrice!!.text = "%s %.2f".format(getString(R.string.euro), myProduct.referencePrice)
                         productOldPrice!!.visibility = View.VISIBLE
                         productOldPrice!!.paintFlags = productOldPrice!!.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                     }
@@ -249,7 +248,7 @@ class ProductDetailsFragment : Fragment() {
         liveImageData.observe(
             viewLifecycleOwner,
             Observer<List<ImageUriEntity?>> { productImages: List<ImageUriEntity?>? ->
-                if (productImages != null && productImages.size > 0) {
+                if (productImages != null && productImages.isNotEmpty()) {
                     mAdapter = ImagesAdapter(requireActivity(), productImages as List<ImageUriEntity>)
                     recyclerView!!.adapter = mAdapter
                     if (productImages.size > 1) {
@@ -268,6 +267,9 @@ class ProductDetailsFragment : Fragment() {
                     cartButton!!.text = getString(R.string.already_added)
                     cartButton!!.isEnabled = false
                     Log.v(TAG, cartEntity.sku)
+                }else{
+                    cartButton!!.text = getString(R.string.add_cart)
+                    cartButton!!.isEnabled = true
                 }
             })
     }
@@ -301,27 +303,27 @@ class ProductDetailsFragment : Fragment() {
                 progressBar!!.visibility = View.INVISIBLE
                 val productDetails: ProductContainer? = response.body()
                 val productPrice: ProductPrice = productDetails!!.productPrice
-                val imageUriEntities: MutableList<ImageUriEntity> = ArrayList<ImageUriEntity>()
+                val imageUriEntities: MutableList<ImageUriEntity> = ArrayList()
 
                 for (j in productDetails.imageUris.indices) {
                     val imageEntity = ImageUriEntity(productDetails.sku, productDetails.imageUris[j])
                     imageUriEntities.add(imageEntity)
                 }
 
-                appExecutors.diskIO().execute(Runnable {
+                appExecutors.diskIO().execute {
                     mDatabase!!.productDao().updateProduct(
-                        productDetails!!.picCount,
-                        productDetails!!.title,
-                        productDetails!!.longDescription,
-                        productDetails!!.reviewers,
-                        productDetails!!.brandNameShort,
-                        productDetails!!.additionalInformation,
-                        productDetails!!.stockAmount,
+                        productDetails.picCount,
+                        productDetails.title,
+                        productDetails.longDescription,
+                        productDetails.reviewers,
+                        productDetails.brandNameShort,
+                        productDetails.additionalInformation,
+                        productDetails.stockAmount,
                         selectedSku
                     )
                     mDatabase!!.imageDao().insertAll(imageUriEntities)
 
-                })
+                }
             }
 
             override fun onFailure(call: Call<ProductContainer?>, t: Throwable) {
@@ -344,7 +346,7 @@ class ProductDetailsFragment : Fragment() {
         })
     }
 
-    private fun ApplyFont() {
+    private fun applyFont() {
         val typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/FiraSans-Regular.ttf")
         productDiscount!!.typeface = typeface
         brandProduct!!.typeface = typeface

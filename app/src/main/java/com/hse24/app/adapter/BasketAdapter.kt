@@ -19,13 +19,10 @@ import com.hse24.app.R
 import com.hse24.app.db.AppDatabase
 import com.hse24.app.db.entity.ProductEntity
 
-import java.lang.String
-import java.util.*
 import javax.inject.Inject
 
-class CartAdapter(private val mContext: Context, productList: List<ProductEntity>) : RecyclerView.Adapter<CartAdapter.MyViewHolder>() {
+class BasketAdapter(private val mContext: Context, private val basketList: List<ProductEntity>) : RecyclerView.Adapter<BasketAdapter.MyViewHolder>() {
 
-    private val productList: List<ProductEntity> = productList
     private lateinit var mDatabase: AppDatabase
 
     @Inject
@@ -41,7 +38,7 @@ class CartAdapter(private val mContext: Context, productList: List<ProductEntity
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.cart_card, parent, false)
+        val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.basket_card, parent, false)
         appExecutors = AppExecutors()
         mDatabase    = AppDatabase.getInstance(mContext)!!
         return MyViewHolder(itemView)
@@ -49,16 +46,16 @@ class CartAdapter(private val mContext: Context, productList: List<ProductEntity
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        val catalogue: ProductEntity = productList[position]
+        val catalogue: ProductEntity = basketList[position]
         val typeface = Typeface.createFromAsset(mContext.assets, "fonts/FiraSans-Regular.ttf")
 
         holder.mView.tag  = position
         holder.brand.text = catalogue.brandNameLong
         holder.name.text  = catalogue.nameShort
-        holder.price.text = String.format(Locale.ENGLISH, "€ %.2f", catalogue.price)
+        holder.price.text = "%s %.2f".format(mContext.getString(R.string.euro), catalogue.price)
 
         if (catalogue.referencePrice != null && catalogue.referencePrice > 0) {
-            holder.oldPrice.text = String.format(Locale.ENGLISH, "€ %.2f", catalogue.referencePrice)
+            holder.oldPrice.text = "%s %.2f".format(mContext.getString(R.string.euro), catalogue.referencePrice)
             holder.oldPrice.paintFlags = holder.oldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
             holder.oldPrice.text = ""
@@ -69,7 +66,7 @@ class CartAdapter(private val mContext: Context, productList: List<ProductEntity
         holder.oldPrice.typeface = typeface
 
         // loading album cover using Glide library
-        val imgUrl = String.format(Locale.ENGLISH, "%s%s%s", Config.HSE24_IMAGE_BASE_URL, catalogue.imageUri, Config.HSE24_IMAGE_PARAM)
+        val imgUrl = "%s%s%s".format(Config.HSE24_IMAGE_BASE_URL, catalogue.imageUri, Config.HSE24_IMAGE_PARAM)
         Glide.with(mContext).load(imgUrl).into(holder.thumbnail)
 
         holder.deleteImg.setOnClickListener {
@@ -77,14 +74,14 @@ class CartAdapter(private val mContext: Context, productList: List<ProductEntity
             builder.setTitle(mContext.getString(R.string.dialog_title))
             builder.setMessage(mContext.getString(R.string.dialog_message))
 
-            builder.setPositiveButton(android.R.string.ok) { dialog, which ->
-                appExecutors.diskIO().execute(Runnable {
-                    mDatabase.cartDao().deleteCartProduct(productList[position].sku)
-                })
+            builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
+                appExecutors.diskIO().execute {
+                    mDatabase.cartDao().deleteCartProduct(basketList[position].sku)
+                }
                 dialog.dismiss()
             }
 
-            builder.setNegativeButton(android.R.string.cancel) { dialog, which ->
+            builder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
                 dialog.cancel()
             }
 
@@ -93,7 +90,7 @@ class CartAdapter(private val mContext: Context, productList: List<ProductEntity
     }
 
     override fun getItemCount(): Int {
-        return productList.size
+        return basketList.size
     }
 
 }

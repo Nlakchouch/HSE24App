@@ -7,10 +7,10 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.util.TypedValue
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextView
+
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+
 import com.google.android.material.snackbar.Snackbar
 import com.hse24.app.AppExecutors
 import com.hse24.app.R
@@ -31,20 +32,20 @@ import com.hse24.app.db.entity.CategoryCountEntity
 import com.hse24.app.db.entity.CategoryEntity
 import com.hse24.app.db.entity.ImageUriEntity
 import com.hse24.app.db.entity.ProductEntity
-import com.hse24.app.model.CatalogueContainer
-import com.hse24.app.model.Filter
-import com.hse24.app.model.Paging
-import com.hse24.app.model.Product
+import com.hse24.app.rest.model.CatalogueContainer
+import com.hse24.app.rest.model.Filter
+import com.hse24.app.rest.model.Paging
+import com.hse24.app.rest.model.Product
 import com.hse24.app.rest.ApiClient
 import com.hse24.app.rest.ApiInterface
 import com.hse24.app.utils.Hse24Utils
 import com.hse24.app.viewmodel.CartViewModel
 import com.hse24.app.viewmodel.CatalogueViewModel
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.String
-import java.util.*
+
 import javax.inject.Inject
 
 class CatalogueFragment : Fragment() {
@@ -72,7 +73,7 @@ class CatalogueFragment : Fragment() {
     private lateinit var appExecutors: AppExecutors
 
     companion object {
-        val TAG = CatalogueFragment::class.java.simpleName
+        val TAG = CatalogueFragment::class.simpleName.toString()
         fun newInstance(idCategory: Int, mTwoPanel: Boolean) = CatalogueFragment().apply {
             val frag = CatalogueFragment()
             val args = Bundle()
@@ -115,7 +116,7 @@ class CatalogueFragment : Fragment() {
                     R.integer.span_count
                 ))
             recyclerView!!.layoutManager = mLayoutManager
-            recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count), dpToPx(10), true))
+            recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count), Hse24Utils.dpToPx(requireActivity(),10), true))
             recyclerView!!.itemAnimator = DefaultItemAnimator()
         }else{
 
@@ -123,24 +124,10 @@ class CatalogueFragment : Fragment() {
               val mLayoutManager = GridLayoutManager(activity, resources.getInteger(
                       R.integer.span_count
                   ))
-             /* mLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
-                  override fun getSpanSize(position: Int): Int {
-                      return when (adapter!!.getItemViewType(position)) {
-                          adapter!!.NORMAL_VIEW -> resources.getInteger(R.integer.span_count)
-                          adapter!!.FOOTER_VIEW -> 1
-                          else -> resources.getInteger(R.integer.span_count)
-                      }
-                  }
-              }*/
 
               recyclerView!!.layoutManager = mLayoutManager
               recyclerView!!.addItemDecoration(
-                  GridSpacingItemDecoration(
-                      resources.getInteger(R.integer.span_count), dpToPx(
-                          10
-                      ), true
-                  )
-              )
+                  GridSpacingItemDecoration(resources.getInteger(R.integer.span_count),  Hse24Utils.dpToPx(requireActivity(),10), true))
               recyclerView!!.itemAnimator = DefaultItemAnimator()
 
           } else if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -202,7 +189,7 @@ class CatalogueFragment : Fragment() {
         val menuItem = menu.findItem(R.id.action_cart)
         val actionView = menuItem.actionView
         textCartItemCount = actionView.findViewById<View>(R.id.cart_badge) as TextView
-        actionView.setOnClickListener { startActivity(Intent(activity, CartActivity::class.java)) }
+        actionView.setOnClickListener { startActivity(Intent(activity, BasketActivity::class.java)) }
     }
 
     private fun subscribeUi(
@@ -262,7 +249,7 @@ class CatalogueFragment : Fragment() {
                 if (sumCart.total === 0) {
                     textCartItemCount!!.visibility = View.GONE
                 } else {
-                    textCartItemCount!!.text = String.valueOf(sumCart.total)
+                    textCartItemCount!!.text = sumCart.total.toString()
                     textCartItemCount!!.visibility = View.VISIBLE
                 }
             }
@@ -288,14 +275,14 @@ class CatalogueFragment : Fragment() {
 
                     val productContainer: CatalogueContainer? = response.body()
                     val products: List<Product> = productContainer!!.productResults
-                    val productEntities: MutableList<ProductEntity> = ArrayList<ProductEntity>()
-                    val imageUriEntities: MutableList<ImageUriEntity> = ArrayList<ImageUriEntity>()
-                    paging = productContainer!!.paging
-                    filter = productContainer!!.filter
+                    val productEntities: MutableList<ProductEntity> = ArrayList()
+                    val imageUriEntities: MutableList<ImageUriEntity> = ArrayList()
+                    paging = productContainer.paging
+                    filter = productContainer.filter
 
                     val productCountEntity = CategoryCountEntity(
                         selectedCategory,
-                        productContainer!!.resultCount
+                        productContainer.resultCount
                     )
 
                     for (i in products.indices) {
@@ -308,17 +295,18 @@ class CatalogueFragment : Fragment() {
                         }
                     }
 
-                    appExecutors.diskIO().execute(Runnable {
+                    appExecutors.diskIO().execute {
                         mDatabase!!.productDao().insertAll(productEntities)
                         mDatabase!!.imageDao().insertAll(imageUriEntities)
                         mDatabase!!.categoryCountDao().insertRow(productCountEntity)
-                    })
+                    }
 
                     if (paging != null && paging!!.numPages > 1) {
                         Log.e(TAG, "Paging " + paging!!.numPages)
                     }
 
                     if (filter != null && filter!!.filterGroups.isNotEmpty()) {
+                        filtersRecycler!!.visibility = View.GONE
                         Log.v(TAG, "Filters " + filter!!.filterGroups.size)
                         filterAdapter = FilterAdapter(requireActivity(), filter!!.filterGroups)
                         filtersRecycler!!.adapter = filterAdapter
@@ -390,19 +378,5 @@ class CatalogueFragment : Fragment() {
                 }
             }
         }
-    }
-
-    /**
-     * Converting dp to pixel
-     */
-    private fun dpToPx(dp: Int): Int {
-        val r = resources
-        return Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp.toFloat(),
-                r.displayMetrics
-            )
-        )
     }
 }

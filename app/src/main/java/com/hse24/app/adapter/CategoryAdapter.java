@@ -15,7 +15,7 @@ import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 import com.hse24.app.adapter.presenter.CategoryPresenter;
 import com.hse24.app.adapter.presenter.ChildPresenterHolder;
 import com.hse24.app.adapter.presenter.ParentPresenterHolder;
-import com.hse24.app.model.CategoryItem;
+import com.hse24.app.adapter.model.CategoryItem;
 
 import java.util.List;
 

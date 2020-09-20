@@ -18,9 +18,9 @@ import com.hse24.app.AppExecutors
 import com.hse24.app.R
 import com.hse24.app.db.AppDatabase
 import com.hse24.app.db.entity.CategoryEntity
-import com.hse24.app.model.Category
-import com.hse24.app.model.CategoryContainer
-import com.hse24.app.model.MainCategory
+import com.hse24.app.rest.model.Category
+import com.hse24.app.rest.model.CategoryContainer
+import com.hse24.app.rest.model.MainCategory
 import com.hse24.app.rest.ApiClient
 import com.hse24.app.rest.ApiInterface
 import com.hse24.app.utils.Hse24Utils
@@ -33,7 +33,9 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListener {
 
-    private val TAG = MainActivity::class.java.simpleName
+    companion object {
+    private val TAG = MainActivity::class.simpleName.toString()
+    }
 
     private var selectedCategoryId: Int? = 0
     private var mTwoPanel = false
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
     @Inject
     private lateinit var appExecutors: AppExecutors
 
-    override fun OnClick(categoryId: Int) {
+    override fun onClick(categoryId: Int) {
         selectedCategoryId = categoryId
         changeCatalogue(selectedCategoryId!!)
     }
@@ -104,7 +106,7 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
         } else {
             categoryFragment = CategoryListFragment()
             supportFragmentManager.beginTransaction()
-                .replace(R.id.catalogue_container, categoryFragment!!, CategoryListFragment.TAG)
+                .replace(R.id.category_container, categoryFragment!!, CategoryListFragment.TAG)
                 .commitAllowingStateLoss()
             supportFragmentManager.executePendingTransactions()
             loadCategoriesData()
@@ -141,7 +143,7 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
         //Creating and adding the CurrencyListFragment to CurrencyActivity
         catalogueFragment = CatalogueFragment.newInstance(idCategory,mTwoPanel)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, catalogueFragment!!, CatalogueFragment.TAG)
+            .replace(R.id.catalogue_container, catalogueFragment!!, CatalogueFragment.TAG)
             .commitAllowingStateLoss()
         supportFragmentManager.executePendingTransactions()
     }
@@ -164,8 +166,8 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
                     progressBar.visibility = View.GONE
 
                     val categories: List<MainCategory> = response.body()!!.children
-                    var categoryEntities: MutableList<CategoryEntity> =
-                        mutableListOf<CategoryEntity>()
+                    val categoryEntities: MutableList<CategoryEntity> =
+                        mutableListOf()
 
                     val rnd = Random()
                     val randomBound = categories.size - 1
@@ -174,12 +176,12 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
 
 
                     for (i in categories.indices) {
-                        var mainCategory: MainCategory = categories[i]
+                        val mainCategory: MainCategory = categories[i]
 
                         for (j in mainCategory.children.indices) {
 
-                            var category: Category = mainCategory.children[j]
-                            var categoryEntity = CategoryEntity(category, mainCategory.categoryId)
+                            val category: Category = mainCategory.children[j]
+                            val categoryEntity = CategoryEntity(category, mainCategory.categoryId)
                             categoryEntities.add(categoryEntity)
                         }
                         categoryEntities.add(
@@ -191,9 +193,9 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
                         )
                     }
 
-                    appExecutors.diskIO().execute(Runnable {
+                    appExecutors.diskIO().execute {
                         mDatabase.categoryDao().insertAll(categoryEntities)
-                    })
+                    }
 
                     changeCatalogue(selectedCategoryId!!)
                     progressBar.visibility = View.INVISIBLE

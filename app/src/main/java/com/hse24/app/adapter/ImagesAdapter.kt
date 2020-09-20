@@ -13,12 +13,7 @@ import com.hse24.app.Config
 import com.hse24.app.R
 import com.hse24.app.db.entity.ImageUriEntity
 
-import java.lang.String
-import java.util.*
-
-class ImagesAdapter(private val mContext: Context, imageUris: List<ImageUriEntity>) : RecyclerView.Adapter<ImagesAdapter.MyViewHolder>() {
-
-    private val imageUris: List<ImageUriEntity> = imageUris
+class ImagesAdapter(private val mContext: Context, private val imageUris: List<ImageUriEntity>) : RecyclerView.Adapter<ImagesAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView: View =
@@ -27,8 +22,7 @@ class ImagesAdapter(private val mContext: Context, imageUris: List<ImageUriEntit
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val imgUrl = String.format(
-            Locale.ENGLISH, "%s%s%s", Config.HSE24_IMAGE_BASE_URL,
+        val imgUrl = "%s%s%s".format(Config.HSE24_IMAGE_BASE_URL,
             imageUris[position].imageUri,
             Config.HSE24_IMAGE_PARAM
         )

@@ -22,12 +22,7 @@ import com.hse24.app.R
 import com.hse24.app.db.entity.ProductEntity
 import com.hse24.app.ui.ProductDetailsActivity
 
-import java.lang.String
-import java.util.*
-
-class CatalogueAdapter(private val mContext: Context, productList: List<ProductEntity>) : RecyclerView.Adapter<CatalogueAdapter.MyViewHolder>() {
-
-    private val productList: List<ProductEntity> = productList
+class CatalogueAdapter(private val mContext: Context, private val productList: List<ProductEntity>) : RecyclerView.Adapter<CatalogueAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
 
@@ -54,10 +49,10 @@ class CatalogueAdapter(private val mContext: Context, productList: List<ProductE
         holder.mView.tag  = position
         holder.brand.text = catalogue.brandNameLong
         holder.name.text  = catalogue.nameShort
-        holder.price.text = String.format(Locale.ENGLISH, "€ %.2f", catalogue.price)
+        holder.price.text = "%s %.2f".format(mContext.getString(R.string.euro), catalogue.price)
 
         if (catalogue.referencePrice != null && catalogue.referencePrice > 0) {
-            holder.oldPrice.text = String.format(Locale.ENGLISH, "€ %.2f", catalogue.referencePrice)
+            holder.oldPrice.text ="%s %.2f".format(mContext.getString(R.string.euro),catalogue.referencePrice)
             holder.oldPrice.paintFlags = holder.oldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
             holder.oldPrice.text = ""
@@ -65,7 +60,7 @@ class CatalogueAdapter(private val mContext: Context, productList: List<ProductE
 
         if (!TextUtils.isEmpty(catalogue.percentDiscount)) {
             holder.discount.visibility = View.VISIBLE
-            holder.discount.text = String.format(Locale.ENGLISH, "-%s", catalogue.percentDiscount).toString() + "%"
+            holder.discount.text = "-%s".format(catalogue.percentDiscount) + "%"
         } else {
             holder.discount.visibility = View.INVISIBLE
         }
@@ -74,7 +69,7 @@ class CatalogueAdapter(private val mContext: Context, productList: List<ProductE
             holder.ratingBar.visibility = View.INVISIBLE
         } else {
             holder.ratingBar.visibility = View.VISIBLE
-            holder.ratingBar.rating = catalogue!!.averageStars.toFloat()
+            holder.ratingBar.rating = catalogue.averageStars.toFloat()
         }
 
         holder.brand.typeface    = typeface
@@ -84,7 +79,7 @@ class CatalogueAdapter(private val mContext: Context, productList: List<ProductE
         holder.discount.typeface = typeface
 
         // loading album cover using Glide library
-        val imgUrl = String.format(Locale.ENGLISH, "%s%s%s", Config.HSE24_IMAGE_BASE_URL, catalogue.imageUri, Config.HSE24_IMAGE_PARAM)
+        val imgUrl = "%s%s%s".format(Config.HSE24_IMAGE_BASE_URL, catalogue.imageUri, Config.HSE24_IMAGE_PARAM)
         Glide.with(mContext).load(imgUrl).into(holder.thumbnail)
 
         holder.mView.setOnClickListener {

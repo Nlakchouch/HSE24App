@@ -31,7 +31,7 @@ class DataRepository @Inject constructor(private val database: AppDatabase) {
 
     init {
         database
-        mObservableCategories = MediatorLiveData<List<CategoryEntity>>()
+        mObservableCategories = MediatorLiveData()
         mObservableCategories.addSource(database.categoryDao().loadAllCategories())
             { categoryEntities ->
             if (database.getDatabaseCreated().value != null) {

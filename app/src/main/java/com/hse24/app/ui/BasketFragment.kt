@@ -3,11 +3,11 @@ package com.hse24.app.ui
 import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -17,22 +17,23 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+
 import com.hse24.app.R
-import com.hse24.app.adapter.CartAdapter
+import com.hse24.app.adapter.BasketAdapter
 import com.hse24.app.db.entity.ProductEntity
 import com.hse24.app.utils.Hse24Utils
 import com.hse24.app.viewmodel.CartViewModel
-import java.util.*
 
-class CartFragment : Fragment() {
+class BasketFragment : Fragment() {
+
+    companion object {
+        val TAG = BasketFragment::class.simpleName.toString()
+    }
+
     private var recyclerView: RecyclerView? = null
     private var emptyTxt: TextView? = null
-    private var adapter: CartAdapter? = null
-    private var cartList: MutableList<ProductEntity>? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var adapter: BasketAdapter? = null
+    private val cartList: MutableList<ProductEntity>? = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -43,13 +44,13 @@ class CartFragment : Fragment() {
         if (Hse24Utils.isTablet(requireActivity())) {
             val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
             recyclerView!!.layoutManager = mLayoutManager
-            recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart), dpToPx(10), true))
+            recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart),  Hse24Utils.dpToPx(requireActivity(),10), true))
             recyclerView!!.itemAnimator = DefaultItemAnimator()
         }else{
           if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
               val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
               recyclerView!!.layoutManager = mLayoutManager
-              recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart), dpToPx(10), true))
+              recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart),  Hse24Utils.dpToPx(requireActivity(),10), true))
               recyclerView!!.itemAnimator = DefaultItemAnimator()
            } else if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
              val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -69,18 +70,21 @@ class CartFragment : Fragment() {
         liveData.observe(
             viewLifecycleOwner,
             Observer<List<ProductEntity>> { myProducts: List<ProductEntity>? ->
-                if (myProducts != null && myProducts.size > 0) {
-                    cartList = ArrayList<ProductEntity>()
+                if (myProducts != null && myProducts.isNotEmpty()) {
+                    cartList!!.clear()
                     for (i in myProducts.indices) {
                         val productEntity: ProductEntity = myProducts[i]
-                        cartList!!.add(productEntity)
+                        cartList.add(productEntity)
                     }
                     recyclerView!!.visibility = View.VISIBLE
                     emptyTxt!!.visibility = View.GONE
-                    adapter = CartAdapter(requireActivity(), cartList as ArrayList<ProductEntity>)
+                    adapter = BasketAdapter(requireActivity(), cartList as ArrayList<ProductEntity>)
                     recyclerView!!.adapter = adapter
                 } else {
+                    cartList!!.clear()
                     emptyTxt!!.visibility = View.VISIBLE
+                    adapter = BasketAdapter(requireActivity(), cartList as ArrayList<ProductEntity>)
+                    adapter!!.notifyDataSetChanged()
                 }
             })
     }
@@ -117,23 +121,5 @@ class CartFragment : Fragment() {
                 }
             }
         }
-    }
-
-    /**
-     * Converting dp to pixel
-     */
-    private fun dpToPx(dp: Int): Int {
-        val r = resources
-        return Math.round(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp.toFloat(),
-                r.displayMetrics
-            )
-        )
-    }
-
-    companion object {
-        val TAG = CartFragment::class.java.simpleName
     }
 }

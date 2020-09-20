@@ -1,11 +1,11 @@
 package com.hse24.app.viewmodel
 
 import android.app.Application
-import androidx.arch.core.util.Function
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
+
 import com.hse24.app.DataRepository
 import com.hse24.app.HSE24App
 import com.hse24.app.db.entity.CategoryCountEntity
@@ -26,20 +26,20 @@ class CatalogueViewModel(application: Application, private val mSavedStateHandle
 
     init {
 
-        mObservableProducts = Transformations.switchMap(mSavedStateHandler.getLiveData("QUERY", 0),
-            Function<Int?, LiveData<List<ProductEntity>>> { categoryId: Int? ->
-                mRepository.getCategoryProducts(categoryId!!)
-            })
+        mObservableProducts = Transformations.switchMap(mSavedStateHandler.getLiveData("QUERY", 0)
+        ) { categoryId: Int? ->
+            mRepository.getCategoryProducts(categoryId!!)
+        }
 
-        mObservableCategory = Transformations.switchMap(mSavedStateHandler.getLiveData("QUERY", 0),
-        Function<Int?, LiveData<CategoryEntity>> { categoryId: Int? ->
+        mObservableCategory = Transformations.switchMap(mSavedStateHandler.getLiveData("QUERY", 0)
+        ) { categoryId: Int? ->
             mRepository.getCategory(categoryId!!)
-        })
+        }
 
-        mObservableCategoryCount = Transformations.switchMap(mSavedStateHandler.getLiveData("QUERY", 0),
-            Function<Int?, LiveData<CategoryCountEntity>> { categoryId: Int? ->
-                mRepository.getCategoryCount(categoryId!!)
-            })
+        mObservableCategoryCount = Transformations.switchMap(mSavedStateHandler.getLiveData("QUERY", 0)
+        ) { categoryId: Int? ->
+            mRepository.getCategoryCount(categoryId!!)
+        }
 
     }
 

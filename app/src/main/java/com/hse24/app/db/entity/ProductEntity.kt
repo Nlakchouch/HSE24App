@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-import com.hse24.app.model.Product
+import com.hse24.app.rest.model.Product
 
 @Entity(tableName = "Products", indices = [Index(value = ["sku"], unique = true)])
 data class ProductEntity (
@@ -65,7 +65,7 @@ data class ProductEntity (
         shippingCosts = product.productPrice.shippingCosts
         percentDiscount = product.productPrice.percentDiscount
         noShippingCosts = product.noShippingCosts
-        imageUri = product.imageUris.get(0)
+        imageUri = product.imageUris[0]
         notAllowedInCountry = product.notAllowedInCountry
     }
 }

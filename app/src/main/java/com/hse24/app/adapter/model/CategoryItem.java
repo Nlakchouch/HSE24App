@@ -1,4 +1,4 @@
-package com.hse24.app.model;
+package com.hse24.app.adapter.model;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 

@@ -11,7 +11,6 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:src="@android:drawable/ic_dialog_info" />
@@ -21,10 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@id/menu_image"
-        android:layout_toRightOf="@id/menu_image"
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 

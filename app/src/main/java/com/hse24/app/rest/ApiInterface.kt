@@ -1,8 +1,8 @@
 package com.hse24.app.rest
 
-import com.hse24.app.model.CategoryContainer
-import com.hse24.app.model.CatalogueContainer
-import com.hse24.app.model.ProductContainer
+import com.hse24.app.rest.model.CategoryContainer
+import com.hse24.app.rest.model.CatalogueContainer
+import com.hse24.app.rest.model.ProductContainer
 
 import retrofit2.Call
 import retrofit2.http.GET

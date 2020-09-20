@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hse24.app.R;
-import com.hse24.app.model.CategoryItem;
+import com.hse24.app.adapter.model.CategoryItem;
 import com.lfm.rvgenadapter.ViewPresenter;
 
 public class CategoryPresenter extends ViewPresenter<CategoryItem> {
@@ -26,12 +26,14 @@ public class CategoryPresenter extends ViewPresenter<CategoryItem> {
 
     @Override
     public void initViewPresenter(Context context, ViewGroup parent, Bundle params, View.OnClickListener onClickListener) {
+
         type = (CategoryItem.TYPE) params.getSerializable("type");
         Typeface typeface  = Typeface.createFromAsset(context.getAssets(), "fonts/FiraSans-Regular.ttf");
         Typeface typefaceBold  = Typeface.createFromAsset(context.getAssets(), "fonts/FiraSans-Bold.ttf");
         this.view = LayoutInflater.from(context).inflate(getLayout(type), parent, false);
-        titreView = (TextView)view.findViewById(R.id.menu_titre);
-        menuToggle = (View)view.findViewById(R.id.menu_toggle);
+
+        titreView  = view.findViewById(R.id.menu_titre);
+        menuToggle = view.findViewById(R.id.menu_toggle);
         this.onClickListener = onClickListener;
 
         if(type == CategoryItem.TYPE.MAIN){

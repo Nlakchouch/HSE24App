@@ -1,4 +1,4 @@
-package com.hse24.app.model
+package com.hse24.app.rest.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -18,13 +18,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
-            android:id="@+id/catalogue_container"
+            android:id="@+id/category_container"
             android:layout_width="@dimen/item_width"
             android:layout_height="match_parent"
             />
 
         <FrameLayout
-            android:id="@+id/fragment_container"
+            android:id="@+id/catalogue_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
