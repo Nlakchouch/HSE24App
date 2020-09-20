@@ -21,9 +21,9 @@ import kotlin.math.roundToInt
  * Created by LAKCHOUCH NAOUFAL on 01/09/20.
  */
 
-object Hse24Utils {
+object AppUtils {
 
-    private const val TAG = "HSE24Utils"
+    private const val TAG = "AppUtils"
 
     /**This method is used to check if the user is connected to WIFI network
      */
@@ -104,14 +104,4 @@ object Hse24Utils {
         return bitmap
     }
 
-    /**
-     * Converting dp to pixel
-     */
-    fun dpToPx(context: Context, dp: Int): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
-            context.resources.displayMetrics
-        ).roundToInt()
-    }
 }

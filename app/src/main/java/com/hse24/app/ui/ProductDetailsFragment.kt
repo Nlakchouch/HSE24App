@@ -20,8 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 
-import com.google.android.material.snackbar.Snackbar
-
 import com.hse24.app.AppExecutors
 import com.hse24.app.R
 import com.hse24.app.adapter.ImagesAdapter
@@ -34,7 +32,8 @@ import com.hse24.app.rest.model.ProductContainer
 import com.hse24.app.rest.model.ProductPrice
 import com.hse24.app.rest.ApiClient
 import com.hse24.app.rest.ApiInterface
-import com.hse24.app.utils.Hse24Utils
+import com.hse24.app.utils.AppUtils
+import com.hse24.app.utils.UiUtils
 import com.hse24.app.viewmodel.ProductDetailViewModel
 
 import me.relex.circleindicator.CircleIndicator2
@@ -148,23 +147,13 @@ class ProductDetailsFragment : Fragment() {
         cartButton!!.setOnClickListener {
 
             if (productEntity != null && productEntity!!.stockAmount > 0) {
-
                 appExecutors.diskIO().execute {
                     val cartEntity = CartEntity(productEntity!!.sku, 1)
                     mDatabase!!.cartDao().insertAll(cartEntity)
                 }
-
-                val snackbar = Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.adding_message),
-                    Snackbar.LENGTH_SHORT
-                )
-                snackbar.show()
+                UiUtils.showSnackBar(requireActivity(), getString(R.string.adding_message))
             }else{
-                val snackbar = Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.sold_out),
-                    Snackbar.LENGTH_SHORT
-                )
-                snackbar.show()
+                UiUtils.showSnackBar(requireActivity(), getString(R.string.sold_out))
             }
         }
     }
@@ -300,16 +289,16 @@ class ProductDetailsFragment : Fragment() {
                 progressBar!!.visibility = View.INVISIBLE
 
                 if (response.isSuccessful) {
-                val productDetails: ProductContainer? = response.body()
-                val productPrice: ProductPrice = productDetails!!.productPrice
-                val imageUriEntities: MutableList<ImageUriEntity> = ArrayList()
+                    val productDetails: ProductContainer? = response.body()
+                    val productPrice: ProductPrice = productDetails!!.productPrice
+                    val imageUriEntities: MutableList<ImageUriEntity> = ArrayList()
 
-                for (j in productDetails.imageUris.indices) {
+                  for (j in productDetails.imageUris.indices) {
                     val imageEntity = ImageUriEntity(productDetails.sku, productDetails.imageUris[j])
                     imageUriEntities.add(imageEntity)
-                }
+                  }
 
-                appExecutors.diskIO().execute {
+                  appExecutors.diskIO().execute {
                     mDatabase!!.productDao().updateProduct(
                         productDetails.picCount,
                         productDetails.title,
@@ -321,8 +310,9 @@ class ProductDetailsFragment : Fragment() {
                         selectedSku
                     )
                     mDatabase!!.imageDao().insertAll(imageUriEntities)
-
-                }
+                  }
+                }else{
+                    UiUtils.showSnackBar(requireActivity(), getString(R.string.service_error_msg))
                 }
             }
 
@@ -330,17 +320,10 @@ class ProductDetailsFragment : Fragment() {
                 Log.e(TAG, t.toString())
 
                 progressBar!!.visibility = View.INVISIBLE
-                if (!Hse24Utils.isNetworkConnected(requireActivity())) {
-                    val snackbar = Snackbar.make(requireActivity().findViewById(android.R.id.content),
-                        getString(R.string.network_error_msg),
-                        Snackbar.LENGTH_SHORT )
-                    snackbar.show()
+                if (!AppUtils.isNetworkConnected(requireActivity())) {
+                    UiUtils.showSnackBar(requireActivity(), getString(R.string.network_error_msg))
                 } else {
-                    val snackbar = Snackbar.make(
-                        requireActivity().findViewById(android.R.id.content),
-                        getString(R.string.service_error_msg),
-                        Snackbar.LENGTH_SHORT)
-                    snackbar.show()
+                    UiUtils.showSnackBar(requireActivity(), getString(R.string.service_error_msg))
                 }
             }
         })

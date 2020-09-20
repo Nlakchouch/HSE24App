@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-import com.google.android.material.snackbar.Snackbar
 import com.hse24.app.AppExecutors
 import com.hse24.app.R
 import com.hse24.app.adapter.CatalogueAdapter
@@ -37,7 +36,8 @@ import com.hse24.app.rest.model.Product
 import com.hse24.app.rest.ApiClient
 import com.hse24.app.rest.ApiInterface
 import com.hse24.app.utils.GridSpacingItemDecoration
-import com.hse24.app.utils.Hse24Utils
+import com.hse24.app.utils.AppUtils
+import com.hse24.app.utils.UiUtils
 import com.hse24.app.viewmodel.CartViewModel
 import com.hse24.app.viewmodel.CatalogueViewModel
 
@@ -115,7 +115,7 @@ class CatalogueFragment : Fragment() {
                     R.integer.span_count
                 ))
             recyclerView!!.layoutManager = mLayoutManager
-            recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count), Hse24Utils.dpToPx(requireActivity(),10), true))
+            recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count), UiUtils.dpToPx(requireActivity(),10), true))
             recyclerView!!.itemAnimator = DefaultItemAnimator()
         }else{
 
@@ -126,7 +126,7 @@ class CatalogueFragment : Fragment() {
 
               recyclerView!!.layoutManager = mLayoutManager
               recyclerView!!.addItemDecoration(
-                  GridSpacingItemDecoration(resources.getInteger(R.integer.span_count),  Hse24Utils.dpToPx(requireActivity(),10), true)
+                  GridSpacingItemDecoration(resources.getInteger(R.integer.span_count),  UiUtils.dpToPx(requireActivity(),10), true)
               )
               recyclerView!!.itemAnimator = DefaultItemAnimator()
 
@@ -263,10 +263,7 @@ class CatalogueFragment : Fragment() {
         val call: Call<CatalogueContainer> = apiService.getCatalogue(selectedCategory)
 
         call.enqueue(object : Callback<CatalogueContainer> {
-            override fun onResponse(
-                call: Call<CatalogueContainer>,
-                response: Response<CatalogueContainer>
-            ) {
+            override fun onResponse(call: Call<CatalogueContainer>, response: Response<CatalogueContainer>) {
 
                 Log.d(TAG, "" + response.code())
                 progressBar!!.visibility = View.INVISIBLE
@@ -275,8 +272,8 @@ class CatalogueFragment : Fragment() {
 
                     val productContainer: CatalogueContainer? = response.body()
                     val products: List<Product> = productContainer!!.productResults
-                    val productEntities: MutableList<ProductEntity> = ArrayList()
-                    val imageUriEntities: MutableList<ImageUriEntity> = ArrayList()
+                    val productEntities: MutableList<ProductEntity> = mutableListOf()
+                    val imageUriEntities: MutableList<ImageUriEntity> = mutableListOf()
                     paging = productContainer.paging
                     filter = productContainer.filter
 
@@ -315,32 +312,17 @@ class CatalogueFragment : Fragment() {
                     }
 
                 } else {
-                    val snackbar = Snackbar.make(
-                        requireActivity().findViewById(android.R.id.content),
-                        getString(R.string.service_error_msg),
-                        Snackbar.LENGTH_SHORT
-                    )
-                    snackbar.show()
+                    UiUtils.showSnackBar(requireActivity(), getString(R.string.service_error_msg))
                 }
             }
 
             override fun onFailure(call: Call<CatalogueContainer>, t: Throwable) {
                 progressBar!!.visibility = View.INVISIBLE
                 Log.e(TAG, t.toString())
-                if (!Hse24Utils.isNetworkConnected(requireActivity())) {
-                    val snackbar = Snackbar.make(
-                        requireActivity().findViewById(android.R.id.content),
-                        getString(R.string.network_error_msg),
-                        Snackbar.LENGTH_SHORT
-                    )
-                    snackbar.show()
-                } else {
-                    val snackbar = Snackbar.make(
-                        requireActivity().findViewById(android.R.id.content),
-                        getString(R.string.service_error_msg),
-                        Snackbar.LENGTH_SHORT
-                    )
-                    snackbar.show()
+                if (!AppUtils.isNetworkConnected(requireActivity())) {
+                    UiUtils.showSnackBar(requireActivity(), getString(R.string.network_error_msg))
+                }else{
+                    UiUtils.showSnackBar(requireActivity(), getString(R.string.service_error_msg))
                 }
             }
         })

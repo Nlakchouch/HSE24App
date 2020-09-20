@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 
 import com.hse24.app.AppExecutors
 import com.hse24.app.R
@@ -23,7 +22,8 @@ import com.hse24.app.rest.model.CategoryContainer
 import com.hse24.app.rest.model.MainCategory
 import com.hse24.app.rest.ApiClient
 import com.hse24.app.rest.ApiInterface
-import com.hse24.app.utils.Hse24Utils
+import com.hse24.app.utils.AppUtils
+import com.hse24.app.utils.UiUtils
 
 import retrofit2.Call
 import retrofit2.Callback
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
 
         setContentView(R.layout.activity_main)
        //Forcing the
-        if (Hse24Utils.isTablet(this)) {
+        if (AppUtils.isTablet(this)) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
@@ -200,6 +200,8 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
                     changeCatalogue(selectedCategoryId!!)
                     progressBar.visibility = View.INVISIBLE
 
+                }else {
+                    UiUtils.showSnackBar(this@MainActivity, getString(R.string.service_error_msg))
                 }
             }
 
@@ -207,20 +209,10 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
                 // Log error here since request failed
                 Log.e(TAG, t.toString())
                 progressBar.visibility = View.INVISIBLE
-                if (!Hse24Utils.isNetworkConnected(this@MainActivity)) {
-                    val snackbar = Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.network_error_msg),
-                        Snackbar.LENGTH_SHORT
-                    )
-                    snackbar.show()
+                if (!AppUtils.isNetworkConnected(this@MainActivity)) {
+                    UiUtils.showSnackBar(this@MainActivity, getString(R.string.network_error_msg))
                 } else {
-                    val snackbar = Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.service_error_msg),
-                        Snackbar.LENGTH_SHORT
-                    )
-                    snackbar.show()
+                    UiUtils.showSnackBar(this@MainActivity, getString(R.string.service_error_msg))
                 }
             }
         })

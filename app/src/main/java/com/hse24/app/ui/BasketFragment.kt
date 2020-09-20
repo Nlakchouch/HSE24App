@@ -20,7 +20,8 @@ import com.hse24.app.R
 import com.hse24.app.adapter.BasketAdapter
 import com.hse24.app.db.entity.ProductEntity
 import com.hse24.app.utils.GridSpacingItemDecoration
-import com.hse24.app.utils.Hse24Utils
+import com.hse24.app.utils.AppUtils
+import com.hse24.app.utils.UiUtils
 import com.hse24.app.viewmodel.CartViewModel
 
 class BasketFragment : Fragment() {
@@ -40,22 +41,26 @@ class BasketFragment : Fragment() {
         emptyTxt = root.findViewById(R.id.cart_empty)
         recyclerView = root.findViewById(R.id.cart_recycler)
 
-        if (Hse24Utils.isTablet(requireActivity())) {
+        if (AppUtils.isTablet(requireActivity())) {
             val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
             recyclerView!!.layoutManager = mLayoutManager
-            recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart),  Hse24Utils.dpToPx(requireActivity(),10), true))
+            recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart), UiUtils.dpToPx(requireActivity(),10), true))
             recyclerView!!.itemAnimator = DefaultItemAnimator()
         }else{
           if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
               val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
               recyclerView!!.layoutManager = mLayoutManager
-              recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart),  Hse24Utils.dpToPx(requireActivity(),10), true))
+              recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart),  UiUtils.dpToPx(requireActivity(),10), true))
               recyclerView!!.itemAnimator = DefaultItemAnimator()
            } else if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
              val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
              recyclerView!!.layoutManager = layoutManager
           }
         }
+
+        adapter = BasketAdapter(requireActivity(), cartList as ArrayList<ProductEntity>)
+        recyclerView!!.adapter = adapter
+
         return root
     }
 
@@ -77,12 +82,10 @@ class BasketFragment : Fragment() {
                     }
                     recyclerView!!.visibility = View.VISIBLE
                     emptyTxt!!.visibility = View.GONE
-                    adapter = BasketAdapter(requireActivity(), cartList as ArrayList<ProductEntity>)
-                    recyclerView!!.adapter = adapter
+                    adapter!!.notifyDataSetChanged()
                 } else {
                     cartList!!.clear()
                     emptyTxt!!.visibility = View.VISIBLE
-                    adapter = BasketAdapter(requireActivity(), cartList as ArrayList<ProductEntity>)
                     adapter!!.notifyDataSetChanged()
                 }
             })
