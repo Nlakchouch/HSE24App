@@ -3,8 +3,7 @@ package com.hse24.app.db.entity
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.hse24.app.rest.model.Product
-import com.hse24.app.rest.model.Variation
+import com.hse24.app.restApi.model.Variation
 
 @Entity(tableName = "Variations", indices = [Index(value = ["sku"], unique = true)])
 data class VariationEntity (

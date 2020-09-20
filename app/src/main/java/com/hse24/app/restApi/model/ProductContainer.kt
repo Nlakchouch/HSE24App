@@ -1,4 +1,4 @@
-package com.hse24.app.rest.model
+package com.hse24.app.restApi.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty

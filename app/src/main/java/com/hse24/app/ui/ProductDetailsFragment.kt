@@ -32,9 +32,9 @@ import com.hse24.app.db.entity.CartEntity
 import com.hse24.app.db.entity.ImageUriEntity
 import com.hse24.app.db.entity.ProductEntity
 import com.hse24.app.db.entity.VariationEntity
-import com.hse24.app.rest.model.ProductContainer
-import com.hse24.app.rest.ApiClient
-import com.hse24.app.rest.ApiInterface
+import com.hse24.app.restApi.model.ProductContainer
+import com.hse24.app.restApi.ApiClient
+import com.hse24.app.restApi.ApiInterface
 import com.hse24.app.utils.AppUtils
 import com.hse24.app.utils.UiUtils
 import com.hse24.app.viewmodel.ProductDetailViewModel

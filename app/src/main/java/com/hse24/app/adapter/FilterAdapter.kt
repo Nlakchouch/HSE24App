@@ -9,7 +9,7 @@ import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
 
 import com.hse24.app.R
-import com.hse24.app.rest.model.FilterGroup
+import com.hse24.app.restApi.model.FilterGroup
 
 class FilterAdapter(private val mContext: Context, private val filterGroups: List<FilterGroup>) : RecyclerView.Adapter<FilterAdapter.MyViewHolder>() {
 

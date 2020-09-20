@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-import com.hse24.app.rest.model.Product
+import com.hse24.app.restApi.model.Product
 
 @Entity(tableName = "Products", indices = [Index(value = ["sku"], unique = true)])
 data class ProductEntity (

@@ -17,11 +17,11 @@ import com.hse24.app.AppExecutors
 import com.hse24.app.R
 import com.hse24.app.db.AppDatabase
 import com.hse24.app.db.entity.CategoryEntity
-import com.hse24.app.rest.model.Category
-import com.hse24.app.rest.model.CategoryContainer
-import com.hse24.app.rest.model.MainCategory
-import com.hse24.app.rest.ApiClient
-import com.hse24.app.rest.ApiInterface
+import com.hse24.app.restApi.model.Category
+import com.hse24.app.restApi.model.CategoryContainer
+import com.hse24.app.restApi.model.MainCategory
+import com.hse24.app.restApi.ApiClient
+import com.hse24.app.restApi.ApiInterface
 import com.hse24.app.utils.AppUtils
 import com.hse24.app.utils.UiUtils
 

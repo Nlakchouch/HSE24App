@@ -1,4 +1,4 @@
-package com.hse24.app.rest
+package com.hse24.app.restApi
 
 import com.hse24.app.Config
 
