@@ -21,7 +21,6 @@ import com.hse24.app.viewmodel.CategoryListViewModel
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject
 import com.hse24.app.R
-import java.util.*
 
 class CategoryListFragment : Fragment() {
 

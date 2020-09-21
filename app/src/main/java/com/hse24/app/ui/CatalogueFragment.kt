@@ -281,7 +281,7 @@ class CatalogueFragment : Fragment() {
 
                     for (i in products.indices) {
                         val product: Product = products[i]
-                        if (product!!.status == Config.SELLABLE_STATUS) {
+                        if (product.status == Config.SELLABLE_STATUS) {
                             val productEntity = ProductEntity(product, selectedCategory)
                             productEntities.add(productEntity)
 

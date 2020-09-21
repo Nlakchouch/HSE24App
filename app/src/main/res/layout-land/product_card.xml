@@ -52,7 +52,7 @@
                 android:layout_marginTop="@dimen/card_margin"
                 android:textColor="@color/brand_color"
                 android:maxLines="1"
-                android:textSize="@dimen/medium_size_padding" />
+                android:textSize="@dimen/price_brand_size" />
 
             <TextView
                 android:id="@+id/name"
