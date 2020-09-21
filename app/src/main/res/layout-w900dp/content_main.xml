@@ -19,7 +19,7 @@
 
         <FrameLayout
             android:id="@+id/category_container"
-            android:layout_width="@dimen/item_width"
+            android:layout_width="@dimen/category_list_width"
             android:layout_height="match_parent"
             />
 

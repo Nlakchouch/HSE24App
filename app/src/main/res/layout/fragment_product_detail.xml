@@ -42,16 +42,16 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:textColor="@android:color/white"
-                android:paddingStart="@dimen/product_title_padding"
-                android:paddingEnd="@dimen/product_title_padding"
-                android:layout_marginTop="@dimen/product_title_padding"
+                android:paddingStart="@dimen/medium_size_margin"
+                android:paddingEnd="@dimen/medium_size_margin"
+                android:layout_marginTop="@dimen/medium_size_margin"
                 android:maxLines="1"
-                android:textSize="@dimen/brand_size" />
+                android:textSize="@dimen/medium_size_text" />
 
         <me.relex.circleindicator.CircleIndicator2
             android:id="@+id/indicator"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="@dimen/circle_indicator_height"
             android:background="@android:color/transparent"
             android:layout_alignParentBottom="true"
             app:ci_drawable="@drawable/grey_radius"
@@ -63,43 +63,42 @@
         <TextView
             android:id="@+id/product_order"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="@dimen/order_number_height"
             android:background="@color/pink"
             android:textColor="@android:color/white"
             android:maxLines="1"
             android:text="@string/order"
-            android:textSize="@dimen/brand_size" />
+            android:textSize="@dimen/medium_size_text" />
 
         <TextView
             android:id="@+id/product_brand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
-            android:layout_marginTop="@dimen/details_padding"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
+            android:layout_marginTop="@dimen/medium_size_margin"
             android:textColor="@color/brand_color"
             android:maxLines="1"
-            android:textSize="@dimen/brand_size" />
+            android:textSize="@dimen/medium_size_text" />
 
         <TextView
             android:id="@+id/product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
-            android:layout_marginTop="@dimen/details_padding_top"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
+            android:layout_marginTop="@dimen/small_size_margin"
             android:maxLines="1"
             android:textColor="@color/name_color"
-            android:textSize="@dimen/title_detail_size" />
+            android:textSize="@dimen/large_size_text" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="@dimen/details_padding_top">
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
+            android:layout_marginTop="@dimen/medium_size_margin">
 
         <RatingBar
             android:id="@+id/product_rating"
@@ -115,10 +114,10 @@
                 android:id="@+id/product_ratings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/details_padding"
+                android:layout_marginStart="@dimen/large_size_margin"
                 android:textColor="@color/pink"
                 android:visibility="gone"
-                android:textSize="@dimen/price_size" />
+                android:textSize="@dimen/price_brand_size" />
 
         </LinearLayout>
 
@@ -126,30 +125,30 @@
             android:id="@+id/product_old_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
-            android:layout_marginTop="@dimen/details_padding_top"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
+            android:layout_marginTop="@dimen/medium_size_margin"
             android:visibility="gone"
             android:textColor="@color/name_color"
-            android:textSize="@dimen/price_size" />
+            android:textSize="@dimen/price_brand_size" />
 
         <TextView
             android:id="@+id/product_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
-            android:layout_marginTop="@dimen/songs_count_padding_bottom"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
+            android:layout_marginTop="@dimen/small_size_margin"
             android:textColor="@color/pink"
-            android:textSize="@dimen/price_detail_size" />
+            android:textSize="@dimen/large_size_text" />
 
         <Button
             android:id="@+id/cart_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/details_padding_top"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
+            android:layout_marginTop="@dimen/medium_size_margin"
             android:background="@drawable/bg_button"
             android:text="@string/add_cart"
             android:textColor="@android:color/white"
@@ -159,49 +158,49 @@
             android:id="@+id/description_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
-            android:layout_marginTop="@dimen/details_padding_top"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
+            android:layout_marginTop="@dimen/medium_size_margin"
             android:textColor="@color/pink"
             android:text="@string/description"
-            android:textSize="@dimen/title_detail_size" />
+            android:textSize="@dimen/large_size_text" />
 
         <TextView
             android:id="@+id/product_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
             android:textColor="@color/name_color"
-            android:textSize="@dimen/price_size" />
+            android:textSize="@dimen/price_brand_size" />
 
         <TextView
             android:id="@+id/dimension_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
             android:textColor="@color/pink"
             android:text="@string/details"
-            android:textSize="@dimen/title_detail_size" />
+            android:textSize="@dimen/large_size_text" />
 
         <TextView
             android:id="@+id/product_dimensions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
-            android:layout_marginTop="@dimen/details_padding_top"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
+            android:layout_marginTop="@dimen/medium_size_margin"
             android:textColor="@color/name_color"
             android:visibility="gone"
-            android:textSize="@dimen/price_size" />
+            android:textSize="@dimen/price_brand_size" />
 
         <WebView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/webView"
-            android:layout_marginStart="@dimen/details_padding"
-            android:layout_marginEnd="@dimen/details_padding"
+            android:layout_marginStart="@dimen/large_size_margin"
+            android:layout_marginEnd="@dimen/large_size_margin"
             />
 
     </LinearLayout>

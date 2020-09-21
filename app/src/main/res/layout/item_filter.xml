@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:layout_centerVertical="true"
     android:layout_alignParentEnd="true"
-    android:layout_margin="@dimen/history_margin_sides"
+    android:layout_margin="@dimen/filter_margin_sides"
     tools:ignore="ContentDescription">
 
     <Spinner

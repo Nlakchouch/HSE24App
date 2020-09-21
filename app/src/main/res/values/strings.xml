@@ -1,18 +1,22 @@
 <resources>
+    <!-- App -->
     <string name="app_name">HSE24</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- Catalogue -->
     <string name="empty_catalogue">No products in this category, please select another one.</string>
     <string name="loading_label">Load more articles</string>
     <string name="euro">€</string>
     <string name="symbol">%</string>
 
+    <!-- Basket -->
     <string name="action_basket">Basket</string>
     <string name="empty_basket">No products in your Basket</string>
     <string name="dialog_title">Deleting product</string>
     <string name="dialog_message">Do you really want to delete this product?</string>
 
+    <!-- Product -->
     <string name="order">Order number</string>
     <string name="description">Description</string>
     <string name="details">Dimension &amp; details</string>
@@ -23,6 +27,7 @@
     <string name="adding_message">The Product is added to your Basket</string>
     <string name="already_added">Added to your Basket</string>
 
+    <!-- Network Errors -->
     <string name="network_error_msg">No Internet connection</string>
     <string name="service_error_msg">UNAVAILABLE SERVICE. Please try later again.</string>
 

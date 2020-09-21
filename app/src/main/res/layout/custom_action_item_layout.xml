@@ -17,16 +17,16 @@
 
     <TextView
         android:id="@+id/cart_badge"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/badge_height_width"
+        android:layout_height="@dimen/badge_height_width"
         android:layout_gravity="end|top"
         android:layout_marginEnd="-5dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="@dimen/badge_margin"
         android:background="@drawable/badge_background"
         android:gravity="center"
-        android:padding="3dp"
+        android:padding="@dimen/badge_margin"
         android:textColor="@android:color/white"
         android:visibility="invisible"
-        android:textSize="12sp"/>
+        android:textSize="@dimen/small_size_text"/>
 
 </FrameLayout>

@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/menu_image"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/thumbnail_size"
+        android:layout_height="@dimen/thumbnail_size"
         android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/medium_size_margin"
+        android:layout_marginTop="@dimen/medium_size_margin"
         android:src="@android:drawable/ic_dialog_info" />
 
     <TextView
@@ -20,15 +20,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/medium_size_margin"
         android:layout_toEndOf="@id/menu_image"
         android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:textSize="@dimen/medium_size_text" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/menu_image"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="@dimen/medium_size_margin"
         android:src="@drawable/divider" />
 </RelativeLayout>

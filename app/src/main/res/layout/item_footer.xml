@@ -9,7 +9,7 @@
         android:id="@+id/paging_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="@dimen/medium_size_padding"
         android:background="@drawable/bg_button"
         android:text="@string/loading_label"
         android:textColor="@android:color/white"

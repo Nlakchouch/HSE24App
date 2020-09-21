@@ -11,8 +11,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_margin"
-        android:elevation="3dp"
-        card_view:cardCornerRadius="@dimen/card_product_radius">
+        android:elevation="@dimen/card_elevation"
+        card_view:cardCornerRadius="@dimen/card_radius">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             <ImageView
                 android:id="@+id/thumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/product_cover_height"
+                android:layout_height="@dimen/card_thumbnail_height"
                 android:layout_alignParentTop="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="matrix" />
@@ -37,9 +37,9 @@
                 android:textColor="@android:color/white"
                 android:paddingLeft="@dimen/card_margin"
                 android:paddingRight="@dimen/card_margin"
-                android:layout_marginTop="@dimen/product_title_padding"
+                android:layout_marginTop="@dimen/medium_size_margin"
                 android:maxLines="1"
-                android:textSize="@dimen/old_price_size" />
+                android:textSize="@dimen/small_size_text" />
 
 
             <TextView
@@ -47,35 +47,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/thumbnail"
-                android:layout_marginLeft="@dimen/product_title_padding"
-                android:layout_marginRight="@dimen/product_title_padding"
-                android:layout_marginTop="@dimen/product_title_padding"
+                android:layout_marginLeft="@dimen/medium_size_margin"
+                android:layout_marginRight="@dimen/medium_size_margin"
+                android:layout_marginTop="@dimen/medium_size_margin"
                 android:textColor="@color/brand_color"
                 android:maxLines="1"
-                android:textSize="@dimen/brand_size" />
+                android:textSize="@dimen/price_brand_size" />
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/brand"
-                android:layout_marginLeft="@dimen/product_title_padding"
-                android:layout_marginRight="@dimen/product_title_padding"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/medium_size_margin"
+                android:layout_marginRight="@dimen/medium_size_margin"
+                android:layout_marginTop="@dimen/card_margin"
                 android:maxLines="1"
                 android:textColor="@color/name_color"
-                android:textSize="@dimen/price_size" />
+                android:textSize="@dimen/price_brand_size" />
 
             <TextView
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name"
-                android:layout_marginLeft="@dimen/product_title_padding"
-                android:layout_marginRight="@dimen/product_title_padding"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/medium_size_margin"
+                android:layout_marginRight="@dimen/medium_size_margin"
+                android:layout_marginTop="@dimen/card_margin"
                 android:textColor="@color/pink"
-                android:textSize="@dimen/price_size" />
+                android:textSize="@dimen/price_brand_size" />
 
             <TextView
                 android:id="@+id/old_price"
@@ -83,11 +83,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name"
                 android:layout_toEndOf="@+id/price"
-                android:layout_marginLeft="@dimen/product_title_padding"
-                android:layout_marginRight="@dimen/product_title_padding"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/medium_size_margin"
+                android:layout_marginRight="@dimen/medium_size_margin"
+                android:layout_marginTop="@dimen/card_margin"
                 android:textColor="@color/name_color"
-                android:textSize="@dimen/price_size" />
+                android:textSize="@dimen/price_brand_size" />
 
             <RatingBar
                 android:id="@+id/rating"
@@ -95,10 +95,10 @@
                 android:layout_height="wrap_content"
                 style="?android:attr/ratingBarStyleSmall"
                 android:theme="@style/RatingBar"
-                android:layout_marginLeft="@dimen/product_title_padding"
-                android:layout_marginRight="@dimen/product_title_padding"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/medium_size_margin"
+                android:layout_marginRight="@dimen/medium_size_margin"
+                android:layout_marginBottom="@dimen/card_margin"
+                android:layout_marginTop="@dimen/card_margin"
                 android:numStars="5"
                 android:stepSize="0.1"
                 android:layout_below="@id/price"

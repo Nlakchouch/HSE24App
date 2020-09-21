@@ -301,9 +301,9 @@ class ProductDetailsFragment : Fragment() {
                         imageUriEntities.add(imageEntity)
                     }
 
-                    for (j in productDetails!!.variations.indices) {
-                        if(productDetails!!.variations[j].status.equals(Config.SELLABLE_STATUS)){
-                           val variationEntity = VariationEntity(productDetails.sku, productDetails!!.variations[j])
+                    for (j in productDetails.variations.indices) {
+                        if(productDetails.variations[j].status.equals(Config.SELLABLE_STATUS)){
+                           val variationEntity = VariationEntity(productDetails.sku, productDetails.variations[j])
                            variationEntities.add(variationEntity)
                         }
                     }

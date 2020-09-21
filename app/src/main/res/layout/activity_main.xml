@@ -14,7 +14,7 @@
 
     <FrameLayout
         android:id="@+id/category_container"
-        android:layout_width="@dimen/recycleview_drawer_width"
+        android:layout_width="@dimen/category_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@android:color/white"

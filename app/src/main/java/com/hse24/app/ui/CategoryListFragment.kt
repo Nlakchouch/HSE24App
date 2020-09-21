@@ -84,7 +84,7 @@ class CategoryListFragment : Fragment() {
         // Update the list when the data changes
         liveData.observe(viewLifecycleOwner, Observer<List<CategoryEntity>> { myCategories: List<CategoryEntity>? ->
                 if (myCategories != null) {
-                    menuItemList !!.clear()
+                    menuItemList.clear()
                     for (i in myCategories.indices) {
                         val mainCategoryEntity = myCategories[i]
                         if (mainCategoryEntity.parentId == 0) {

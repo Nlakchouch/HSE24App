@@ -13,25 +13,23 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="1dp"
-        android:paddingTop="10dp">
+        android:padding="@dimen/medium_size_padding"
+        >
 
         <TextView
             android:id="@+id/menu_titre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/medium_size_margin"
             android:layout_weight="1"
             android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/medium_size_text" />
 
         <ImageView
             android:id="@+id/menu_toggle"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="10dp"
+            android:layout_width="@dimen/thumbnail_size_big"
+            android:layout_height="@dimen/thumbnail_size_big"
+            android:layout_marginEnd="@dimen/medium_size_margin"
             android:src="@drawable/menu_toggle" />
 
     </LinearLayout>
@@ -40,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/medium_size_margin"
         android:src="@drawable/divider" />
 
 </RelativeLayout>
