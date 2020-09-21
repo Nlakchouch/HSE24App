@@ -13,7 +13,7 @@ import com.hse24.app.utils.UiUtils
 class ProductDetailsActivity : AppCompatActivity() {
 
     private var selectedSku: String? = ""
-    private var mFragment: Fragment? = null
+    private var productDetailFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -30,13 +30,13 @@ class ProductDetailsActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         if (savedInstanceState != null) {
             //Restore the fragment's instance
-            mFragment = fragmentManager.getFragment(savedInstanceState, ProductDetailsFragment.TAG)
+            productDetailFragment = fragmentManager.getFragment(savedInstanceState, ProductDetailsFragment.TAG)
             selectedSku = savedInstanceState.getString("sku")
 
         } else {
-            mFragment = ProductDetailsFragment.newInstance(selectedSku)
+            productDetailFragment = ProductDetailsFragment.newInstance(selectedSku)
             fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, mFragment!!, ProductDetailsFragment.TAG)
+                .replace(R.id.fragment_container, productDetailFragment!!, ProductDetailsFragment.TAG)
                 .commitAllowingStateLoss()
             fragmentManager.executePendingTransactions()
         }
@@ -45,7 +45,9 @@ class ProductDetailsActivity : AppCompatActivity() {
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         //Save the fragment's instance
-        supportFragmentManager.putFragment(savedInstanceState, ProductDetailsFragment.TAG, mFragment!!)
+        if(productDetailFragment != null)
+        supportFragmentManager.putFragment(savedInstanceState, ProductDetailsFragment.TAG, productDetailFragment!!)
+
         savedInstanceState.putString("sku", selectedSku)
     }
 

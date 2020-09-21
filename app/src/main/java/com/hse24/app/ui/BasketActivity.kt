@@ -11,7 +11,7 @@ import com.hse24.app.utils.UiUtils
 
 class BasketActivity : AppCompatActivity() {
 
-    private var mFragment: Fragment? = null
+    private var basketFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -27,11 +27,11 @@ class BasketActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         if (savedInstanceState != null) {
             //Restore the fragment's instance
-            mFragment = fragmentManager.getFragment(savedInstanceState, BasketFragment.TAG)
+            basketFragment = fragmentManager.getFragment(savedInstanceState, BasketFragment.TAG)
         } else {
-            mFragment = BasketFragment()
+            basketFragment = BasketFragment()
             fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, mFragment!!, BasketFragment.TAG)
+                .replace(R.id.fragment_container, basketFragment!!, BasketFragment.TAG)
                 .commitAllowingStateLoss()
             fragmentManager.executePendingTransactions()
         }
@@ -40,7 +40,8 @@ class BasketActivity : AppCompatActivity() {
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         //Save the fragment's instance
-        supportFragmentManager.putFragment(savedInstanceState, BasketFragment.TAG, mFragment!!)
+        if(basketFragment != null)
+        supportFragmentManager.putFragment(savedInstanceState, BasketFragment.TAG, basketFragment!!)
     }
 
     private fun initActionBar() {

@@ -104,8 +104,12 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         //Save the fragment's instance
-        supportFragmentManager.putFragment(savedInstanceState, CategoryListFragment.TAG, categoryFragment!!)
+        if(categoryFragment != null)
+           supportFragmentManager.putFragment(savedInstanceState, CategoryListFragment.TAG, categoryFragment!!)
+
+        if(catalogueFragment != null)
         supportFragmentManager.putFragment(savedInstanceState, CatalogueFragment.TAG, catalogueFragment!!)
+
         savedInstanceState.putInt("category", selectedCategoryId!!)
     }
 
