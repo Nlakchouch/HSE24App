@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
     private var categoryFragment: Fragment? = null
     private var catalogueFragment: Fragment? = null
 
-    var categoriesCall: Call<CategoryContainer>? = null
+    private var categoriesCall: Call<CategoryContainer>? = null
 
     private lateinit var mDatabase: AppDatabase
     @Inject
@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
         super.onDestroy()
 
         if (categoriesCall != null) {
-            categoriesCall!!.cancel();
+            categoriesCall!!.cancel()
         }
     }
 

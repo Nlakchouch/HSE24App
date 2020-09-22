@@ -12,6 +12,6 @@ class HSE24App : Application() {
         super.onCreate()
     }
 
-    fun getDatabase(): AppDatabase? { return AppDatabase.getInstance(this)}
+    private fun getDatabase(): AppDatabase? { return AppDatabase.getInstance(this)}
     fun getRepository(): DataRepository? { return getDatabase()?.let { DataRepository.getInstance(it) } }
 }

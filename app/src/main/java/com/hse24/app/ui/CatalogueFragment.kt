@@ -66,7 +66,7 @@ class CatalogueFragment : Fragment() {
     private var paging: Paging? = null
     private var filter: Filter? = null
 
-    var catalogueCall: Call<CatalogueContainer>? = null
+    private var catalogueCall: Call<CatalogueContainer>? = null
 
     @Inject
     private lateinit var appExecutors: AppExecutors
@@ -202,7 +202,7 @@ class CatalogueFragment : Fragment() {
         super.onDestroy()
 
         if (catalogueCall != null) {
-            catalogueCall!!.cancel();
+            catalogueCall!!.cancel()
         }
     }
 

@@ -75,7 +75,7 @@ class ProductDetailsFragment : Fragment() {
 
     private var mDatabase: AppDatabase? = null
     private val pagerSnapHelper = PagerSnapHelper()
-    var productCall: Call<ProductContainer>? = null
+    private var productCall: Call<ProductContainer>? = null
 
     @Inject
     private lateinit var appExecutors: AppExecutors
@@ -196,7 +196,7 @@ class ProductDetailsFragment : Fragment() {
         super.onDestroy()
 
         if (productCall != null) {
-            productCall!!.cancel();
+            productCall!!.cancel()
         }
     }
 
@@ -273,7 +273,7 @@ class ProductDetailsFragment : Fragment() {
 
         liveVariationsData.observe(viewLifecycleOwner, Observer<List<VariationEntity>>{ variations: List<VariationEntity> ->
             if (variations.isNotEmpty()) {
-                imageUriEntities!!.clear()
+                imageUriEntities.clear()
                 for (i in variations.indices) {
                     val imageEntity = ImageUriEntity(variations[i].sku, variations[i].imageUri)
                     imageUriEntities.add(imageEntity)
@@ -289,7 +289,7 @@ class ProductDetailsFragment : Fragment() {
 
                 liveImageData.observe(viewLifecycleOwner, Observer<List<ImageUriEntity>> { productImages: List<ImageUriEntity?> ->
                     if (productImages.isNotEmpty()) {
-                        imageUriEntities!!.clear()
+                        imageUriEntities.clear()
 
                         for (i in productImages.indices) {
                             imageUriEntities.add(productImages[i]!!)
