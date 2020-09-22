@@ -13,7 +13,7 @@ class CategoryListViewModel(application: Application) : AndroidViewModel(applica
     private val mObservableCategories: LiveData<List<CategoryEntity>>
 
     /**
-     * Expose the LiveData Products query so the UI can observe it.
+     * Expose the LiveData Categories query so the UI can observe it.
      */
     fun getCategories(): LiveData<List<CategoryEntity>> {
         return mObservableCategories

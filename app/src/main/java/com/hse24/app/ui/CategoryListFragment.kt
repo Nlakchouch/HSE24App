@@ -33,6 +33,7 @@ class CategoryListFragment : Fragment() {
     private var menuItemList: MutableList<ParentObject> = mutableListOf()
     private var mCategoryCallback: OnCategoryListener? = null
 
+    // Create the listener for the selected category
     private val onCategoryClickListener = View.OnClickListener { v ->
             val idCategory: Int = (v.getTag(R.id.tag_content) as CategoryItem).id
             Log.v("categorySelected", "" + idCategory)
@@ -75,12 +76,13 @@ class CategoryListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val categoryListViewModel: CategoryListViewModel = ViewModelProvider(this).get(CategoryListViewModel::class.java)
         subscribeUi(categoryListViewModel.getCategories())
     }
 
     private fun subscribeUi(liveData: LiveData<List<CategoryEntity>>) {
-        // Update the list when the data changes
+        // Update the category list when the data changes
         liveData.observe(viewLifecycleOwner, Observer<List<CategoryEntity>> { myCategories: List<CategoryEntity>? ->
                 if (myCategories != null) {
                     menuItemList.clear()
@@ -104,6 +106,7 @@ class CategoryListFragment : Fragment() {
                         }
                     }
                     Log.v(TAG, "" + menuItemList.size)
+                    // Create and set the adapter for the RecyclerView.
                     categoryAdapter = CategoryAdapter(activity, menuItemList, onCategoryClickListener)
                     recyclerView!!.adapter = categoryAdapter
                 }

@@ -58,7 +58,7 @@ class ProductDetailViewModel(application: Application, private val mSavedStateHa
     }
 
     /**
-     * Expose the LiveData Products query so the UI can observe it.
+     * Expose the LiveData Product, its Variations and the total of items in the Cart so the UI can observe it.
      */
     fun getProductDetails(): LiveData<ProductEntity> {return  mObservableProduct }
 

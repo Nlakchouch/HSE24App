@@ -51,7 +51,7 @@ class CatalogueFragment : Fragment() {
     private var progressBar: ProgressBar? = null
     private var recyclerView: RecyclerView? = null
     private var filtersRecycler: RecyclerView? = null
-    private var emptyTxt: TextView? = null
+    private var emptyCatalogue: TextView? = null
     private var categoryTxt: TextView? = null
     private var textCartItemCount: TextView? = null
 
@@ -59,7 +59,7 @@ class CatalogueFragment : Fragment() {
     private var twoPanel: Boolean = false
     private var productList: MutableList<ProductEntity>? = mutableListOf()
 
-    private var adapter: CatalogueAdapter? = null
+    private var catalogueAdapter: CatalogueAdapter? = null
     private var filterAdapter: FilterAdapter? = null
     private var mDatabase: AppDatabase? = null
 
@@ -73,6 +73,7 @@ class CatalogueFragment : Fragment() {
 
     companion object {
         val TAG = CatalogueFragment::class.simpleName.toString()
+        /** Creates catalogue fragment for specific category ID */
         fun newInstance(idCategory: Int, mTwoPanel: Boolean) = CatalogueFragment().apply {
             val frag = CatalogueFragment()
             val args = Bundle()
@@ -97,7 +98,7 @@ class CatalogueFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val root: View  = inflater.inflate(R.layout.fragment_catalogue, container, false)
-        emptyTxt        = root.findViewById(R.id.text_empty)
+        emptyCatalogue  = root.findViewById(R.id.text_empty)
         categoryTxt     = root.findViewById(R.id.text_category)
         recyclerView    = root.findViewById(R.id.catalogue_recycler)
         filtersRecycler = root.findViewById(R.id.filter_recycler)
@@ -107,17 +108,32 @@ class CatalogueFragment : Fragment() {
         filtersRecycler!!.layoutManager = layoutManager
 
         if(twoPanel){
+            //in Tablets the scrolling of Catalogue's recycleView is Vertical
             val mLayoutManager = GridLayoutManager(activity, resources.getInteger(
                     R.integer.span_count
                 ))
             recyclerView!!.layoutManager = mLayoutManager
             recyclerView!!.addItemDecoration(
-                GridSpacingItemDecoration(resources.getInteger(R.integer.span_count), UiUtils.dpToPx(requireActivity(), 10), true)
-            )
+                GridSpacingItemDecoration(resources.getInteger(R.integer.span_count), UiUtils.dpToPx(requireActivity(), 10), true))
             recyclerView!!.itemAnimator = DefaultItemAnimator()
+            recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(@NonNull recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!recyclerView.canScrollVertically(1)) { //1 for down
+                        /**
+                         * Implementing loading when scrolling to the bottom of the RecyclerView
+                        The infinite loading is based on the number of pages of each category *
+                         **/
+                        if (paging != null && paging!!.numPages > 1 && paging!!.numPages != paging!!.page) {
+                            loadCatalogueData(paging!!.page + 1)
+                        }
+                    }
+                }
+            })
         }else{
 
           if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+              //in PORTRAIT Orientation the scrolling of Catalogue's recycleView is Vertical
               val mLayoutManager = GridLayoutManager(activity, resources.getInteger(
                       R.integer.span_count
                   ))
@@ -127,31 +143,55 @@ class CatalogueFragment : Fragment() {
               )
               recyclerView!!.itemAnimator = DefaultItemAnimator()
 
+              recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                  override fun onScrolled(@NonNull recyclerView: RecyclerView, dx: Int, dy: Int) {
+                      super.onScrolled(recyclerView, dx, dy)
+                      if (!recyclerView.canScrollVertically(1)) { //1 for down
+                          /**
+                           * Implementing loading when scrolling to the bottom of the RecyclerView
+                          The infinite loading is based on the number of pages of each category *
+                           **/
+                          if (paging != null && paging!!.numPages > 1 && paging!!.numPages != paging!!.page) {
+                              loadCatalogueData(paging!!.page + 1)
+                          }
+                      }
+                  }
+              })
+
           } else if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+              //in LANDSCAPE Orientation the scrolling of Catalogue's recycleView is Horizontal
               categoryTxt!!.visibility = View.GONE
               filtersRecycler!!.visibility = View.GONE
               val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
               recyclerView!!.layoutManager = layoutManager
+              recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                  override fun onScrolled(@NonNull recyclerView: RecyclerView, dx: Int, dy: Int) {
+                      super.onScrolled(recyclerView, dx, dy)
+                      if (!recyclerView.canScrollHorizontally(1)) { //1 for down
+                          /**
+                           * Implementing loading when scrolling to the bottom of the RecyclerView
+                          The infinite loading is based on the number of pages of each category *
+                           **/
+                          if (paging != null && paging!!.numPages > 1 && paging!!.numPages != paging!!.page) {
+                              loadCatalogueData(paging!!.page + 1)
+                          }
+                      }
+                  }
+              })
           }
         }
 
-        adapter = CatalogueAdapter(requireActivity(), productList as ArrayList<ProductEntity>)
-        recyclerView!!.adapter = adapter
+        // Create and set the adapter for the RecyclerView.
+        catalogueAdapter = CatalogueAdapter(requireActivity(), productList as ArrayList<ProductEntity>)
+        recyclerView!!.adapter = catalogueAdapter
 
-        recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(@NonNull recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1)) { //1 for down
-                    if (paging != null && paging!!.numPages > 1 && paging!!.numPages != paging!!.page) {
-                        loadCatalogueData(paging!!.page + 1)
-                    }
-                }
-            }
-        })
 
+        // Change the Font of textViews (FiraFont)
         val typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/FiraSans-Bold.ttf")
         categoryTxt!!.typeface = typeface
+        emptyCatalogue!!.typeface = typeface
 
+        //Loading catalogue date for specific category ID
         if (paging == null)
             loadCatalogueData(1)
 
@@ -200,7 +240,8 @@ class CatalogueFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-
+        catalogueAdapter = null
+        filterAdapter = null
         if (catalogueCall != null) {
             catalogueCall!!.cancel()
         }
@@ -212,39 +253,43 @@ class CatalogueFragment : Fragment() {
         liveCountData: LiveData<CategoryCountEntity>
     ) {
 
+        // Update the catalogue when the data changes
         liveData.observe(viewLifecycleOwner, Observer<List<ProductEntity>> { myProducts: List<ProductEntity>? ->
                 if (myProducts != null && myProducts.isNotEmpty()) {
                     productList!!.clear()
                     myProducts.indices.forEach { i -> productList!!.add(myProducts[i]) }
                     recyclerView!!.visibility = View.VISIBLE
-                    emptyTxt!!.visibility = View.GONE
-                    adapter!!.notifyDataSetChanged()
+                    emptyCatalogue!!.visibility = View.GONE
+                    catalogueAdapter!!.notifyDataSetChanged()
                 } else {
                     recyclerView!!.visibility = View.INVISIBLE
-                    adapter!!.notifyDataSetChanged()
+                    catalogueAdapter!!.notifyDataSetChanged()
                 }
             })
 
+        // Update the selected category text when the data changes
         liveCategoryData.observe(viewLifecycleOwner, Observer<CategoryEntity> { myCategory: CategoryEntity? ->
                 if (myCategory != null) {
                     categoryTxt!!.text = myCategory.name
                 }
             })
 
+        // Update the emptyCatalogue text when the data changes
         liveCountData.observe(viewLifecycleOwner, Observer<CategoryCountEntity> { myCountCategory: CategoryCountEntity? ->
                 if (myCountCategory != null) {
                     if (myCountCategory.resultCount == 0) {
-                        emptyTxt!!.text = getString(R.string.empty_catalogue)
-                        emptyTxt!!.visibility = View.VISIBLE
+                        emptyCatalogue!!.text = getString(R.string.empty_catalogue)
+                        emptyCatalogue!!.visibility = View.VISIBLE
                     } else if (myCountCategory.resultCount > 0) {
-                        emptyTxt!!.text = ""
-                        emptyTxt!!.visibility = View.GONE
+                        emptyCatalogue!!.text = ""
+                        emptyCatalogue!!.visibility = View.GONE
                     }
                 }
             })
     }
 
     private fun setupBadge(liveData: LiveData<SumCart>) {
+        // Update the number of items in Cart when the data changes
         liveData.observe(this.viewLifecycleOwner, Observer<SumCart> { sumCart: SumCart ->
             if (textCartItemCount != null) {
                 if (sumCart.total === 0) {
@@ -268,7 +313,7 @@ class CatalogueFragment : Fragment() {
                 progressBar!!.visibility = View.INVISIBLE
 
                 if (response.isSuccessful) {
-                     //Delete and clean BD during the first loading of products
+                     //Delete and clean BD for a specific Category during the first loading of catalogue
                     if(pageNum ==1){
                         appExecutors.diskIO().execute {
                             mDatabase!!.productDao().deleteCategoryProducts(selectedCategory)
@@ -308,8 +353,10 @@ class CatalogueFragment : Fragment() {
                         Log.e(TAG, "Paging " + paging!!.numPages)
                     }
 
+                    //Used to show the filters of a specific category
                     if (filter != null && filter!!.filterGroups.isNotEmpty()) {
                         Log.v(TAG, "Filters " + filter!!.filterGroups.size)
+                        //Change the visibility in this line to visible to visualize the filters's RecyclerView
                         filtersRecycler!!.visibility = View.GONE
                         filterAdapter = FilterAdapter(requireActivity(), filter!!.filterGroups)
                         filtersRecycler!!.adapter = filterAdapter

@@ -54,22 +54,22 @@ class ProductDetailsFragment : Fragment() {
     private var indicator: CircleIndicator2? = null
     private var detailsLayout: LinearLayout? = null
     private var progressBar: ProgressBar? = null
-    private var ratingBar: RatingBar? = null
+    private var productRating: RatingBar? = null
     private var recyclerView: RecyclerView? = null
-    private var brandProduct: TextView? = null
-    private var orderProduct: TextView? = null
-    private var nameProduct: TextView? = null
-    private var priceProduct: TextView? = null
-    private var descProduct: TextView? = null
+    private var productBrand: TextView? = null
+    private var productOrder: TextView? = null
+    private var productName: TextView? = null
+    private var productPrice: TextView? = null
+    private var productDesc: TextView? = null
     private var productOldPrice: TextView? = null
     private var productDimensions: TextView? = null
     private var productDiscount: TextView? = null
     private var descriptionLbl: TextView? = null
     private var dimensionLbl: TextView? = null
-    private var ratingsProduct: TextView? = null
+    private var productReviews: TextView? = null
     private var textCartItem: TextView? = null
     private var webView: WebView? = null
-    private var mAdapter: ImagesAdapter? = null
+    private var imagesAdapter: ImagesAdapter? = null
     private var productEntity: ProductEntity? = null
     private var imageUriEntities: MutableList<ImageUriEntity> = mutableListOf()
 
@@ -82,6 +82,7 @@ class ProductDetailsFragment : Fragment() {
 
     companion object {
         val TAG = ProductDetailsFragment::class.simpleName.toString()
+        /** Creates product detail fragment for specific product SKU */
         fun newInstance(sku: String?) = ProductDetailsFragment().apply {
             val frag = ProductDetailsFragment()
             val args = Bundle()
@@ -107,14 +108,14 @@ class ProductDetailsFragment : Fragment() {
 
         progressBar     = root.findViewById(R.id.progressBar3)
         productDiscount = root.findViewById(R.id.product_discount)
-        brandProduct    = root.findViewById(R.id.product_brand)
-        nameProduct     = root.findViewById(R.id.product_name)
+        productOrder    = root.findViewById(R.id.product_order)
+        productBrand    = root.findViewById(R.id.product_brand)
+        productName    = root.findViewById(R.id.product_name)
         productOldPrice = root.findViewById(R.id.product_old_price)
-        priceProduct    = root.findViewById(R.id.product_price)
-        orderProduct    = root.findViewById(R.id.product_order)
-        ratingBar       = root.findViewById(R.id.product_rating)
-        ratingsProduct  = root.findViewById(R.id.product_ratings)
-        descProduct     = root.findViewById(R.id.product_description)
+        productPrice    = root.findViewById(R.id.product_price)
+        productRating   = root.findViewById(R.id.product_rating)
+        productReviews  = root.findViewById(R.id.product_ratings)
+        productDesc     = root.findViewById(R.id.product_description)
         webView         = root.findViewById(R.id.webView)
 
         productDimensions = root.findViewById(R.id.product_dimensions)
@@ -129,10 +130,14 @@ class ProductDetailsFragment : Fragment() {
         recyclerView!!.layoutManager = layoutManager
         pagerSnapHelper.attachToRecyclerView(recyclerView)
 
-        mAdapter = ImagesAdapter(requireActivity(), imageUriEntities)
-        recyclerView!!.adapter = mAdapter
+        // Create and set the adapter for the RecyclerView.
+        imagesAdapter = ImagesAdapter(requireActivity(), imageUriEntities)
+        recyclerView!!.adapter = imagesAdapter
 
+        // Change the Font of textViews (FiraFont)
         applyFont()
+
+        //Loading Product date for specific product SKU
         loadProductData()
 
         return root
@@ -156,7 +161,6 @@ class ProductDetailsFragment : Fragment() {
 
 
         cartButton!!.setOnClickListener {
-
             if (productEntity != null && productEntity!!.stockAmount > 0) {
                 appExecutors.diskIO().execute {
                     val cartEntity = CartEntity(productEntity!!.sku, 1)
@@ -202,23 +206,22 @@ class ProductDetailsFragment : Fragment() {
 
     private fun subscribeUi(liveData: LiveData<ProductEntity>,
                             liveCartData: LiveData<CartEntity>) {
-
+        // Update the product details when the data changes
         liveData.observe(viewLifecycleOwner, Observer<ProductEntity> { myProduct: ProductEntity? ->
-
                 if (myProduct != null) {
                     productEntity = myProduct
                     detailsLayout!!.visibility = View.VISIBLE
-                    brandProduct!!.text = myProduct.brandNameLong
-                    nameProduct!!.text = myProduct.nameShort
-                    priceProduct!!.text = "%s %.2f".format(getString(R.string.euro), myProduct.price)
-                    orderProduct!!.text = "  %s  %s".format(getString(R.string.order), myProduct.sku)
-                    ratingBar!!.rating = myProduct.averageStars.toFloat()
+                    productBrand!!.text = myProduct.brandNameLong
+                    productName!!.text = myProduct.nameShort
+                    productPrice!!.text = "%s %.2f".format(getString(R.string.euro), myProduct.price)
+                    productOrder!!.text = "  %s  %s".format(getString(R.string.order), myProduct.sku)
+                    productRating!!.rating = myProduct.averageStars.toFloat()
 
                     if (!TextUtils.isEmpty(myProduct.longDescription)) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            descProduct!!.text = Html.fromHtml(myProduct.longDescription, Html.FROM_HTML_MODE_LEGACY)
+                            productDesc!!.text = Html.fromHtml(myProduct.longDescription, Html.FROM_HTML_MODE_LEGACY)
                         } else {
-                            descProduct!!.text = Html.fromHtml(myProduct.longDescription)
+                            productDesc!!.text = Html.fromHtml(myProduct.longDescription)
                         }
                         descriptionLbl!!.visibility = View.VISIBLE
                     } else {
@@ -234,11 +237,11 @@ class ProductDetailsFragment : Fragment() {
                     }
 
                     if (myProduct.reviewers > 1) {
-                        ratingsProduct!!.text = "%d %s".format(myProduct.reviewers, getString(R.string.ratings))
-                        ratingsProduct!!.visibility = View.VISIBLE
+                        productReviews!!.text = "%d %s".format(myProduct.reviewers, getString(R.string.ratings))
+                        productReviews!!.visibility = View.VISIBLE
                     } else if (myProduct.reviewers == 1) {
-                        ratingsProduct!!.text = "%d %s".format(myProduct.reviewers, getString(R.string.rating))
-                        ratingsProduct!!.visibility = View.VISIBLE
+                        productReviews!!.text = "%d %s".format(myProduct.reviewers, getString(R.string.rating))
+                        productReviews!!.visibility = View.VISIBLE
                     }
 
                     if (!TextUtils.isEmpty(myProduct.percentDiscount)) {
@@ -256,6 +259,7 @@ class ProductDetailsFragment : Fragment() {
                 }
             })
 
+        // Update the text in Add To Cart Button when the data changes
         liveCartData.observe(viewLifecycleOwner, Observer<CartEntity> { cartEntity: CartEntity? ->
                 if (cartEntity != null) {
                     cartButton!!.text = getString(R.string.already_added)
@@ -270,7 +274,7 @@ class ProductDetailsFragment : Fragment() {
 
     private fun subscribeVariationsUi(liveVariationsData: LiveData<List<VariationEntity>>,
                                       liveImageData: LiveData<List<ImageUriEntity>>){
-
+        // Update the product variations SlideShow when the data changes
         liveVariationsData.observe(viewLifecycleOwner, Observer<List<VariationEntity>>{ variations: List<VariationEntity> ->
             if (variations.isNotEmpty()) {
                 imageUriEntities.clear()
@@ -284,13 +288,12 @@ class ProductDetailsFragment : Fragment() {
                 } else {
                     indicator!!.visibility = View.GONE
                 }
-                mAdapter!!.notifyDataSetChanged()
+                imagesAdapter!!.notifyDataSetChanged()
             }else{
-
+                // Update the product SlideShow when there are no variations and the data changes
                 liveImageData.observe(viewLifecycleOwner, Observer<List<ImageUriEntity>> { productImages: List<ImageUriEntity?> ->
                     if (productImages.isNotEmpty()) {
                         imageUriEntities.clear()
-
                         for (i in productImages.indices) {
                             imageUriEntities.add(productImages[i]!!)
                         }
@@ -300,14 +303,15 @@ class ProductDetailsFragment : Fragment() {
                         } else {
                             indicator!!.visibility = View.GONE
                         }
+                        imagesAdapter!!.notifyDataSetChanged()
                     }
-                    mAdapter!!.notifyDataSetChanged()
                 })
             }
         })
     }
 
     private fun setupBadge(liveSumCartData: LiveData<SumCart>) {
+        // Update the number of items in Cart when the data changes
         liveSumCartData.observe(this.viewLifecycleOwner, Observer<SumCart> { sumCart: SumCart ->
             Log.v("cartDetails", "" + sumCart.total)
             requireActivity().runOnUiThread {
@@ -384,16 +388,16 @@ class ProductDetailsFragment : Fragment() {
     private fun applyFont() {
         val typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/FiraSans-Regular.ttf")
         productDiscount!!.typeface = typeface
-        brandProduct!!.typeface = typeface
-        nameProduct!!.typeface = typeface
-        priceProduct!!.typeface = typeface
-        descProduct!!.typeface = typeface
-        orderProduct!!.typeface = typeface
+        productBrand!!.typeface = typeface
+        productName!!.typeface = typeface
+        productPrice!!.typeface = typeface
+        productDesc!!.typeface = typeface
+        productOrder!!.typeface = typeface
         productOldPrice!!.typeface = typeface
         descriptionLbl!!.typeface = typeface
         dimensionLbl!!.typeface = typeface
         productDimensions!!.typeface = typeface
-        ratingsProduct!!.typeface = typeface
+        productReviews!!.typeface = typeface
         cartButton!!.typeface = typeface
     }
 }

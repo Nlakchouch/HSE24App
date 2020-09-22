@@ -1,6 +1,7 @@
 package com.hse24.app.ui
 
 import android.content.res.Configuration
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,35 +31,45 @@ class BasketFragment : Fragment() {
     }
 
     private var recyclerView: RecyclerView? = null
-    private var emptyTxt: TextView? = null
-    private var adapter: BasketAdapter? = null
+    private var emptyBasket: TextView? = null
+    private var basketAdapter: BasketAdapter? = null
     private val cartList: MutableList<ProductEntity>? = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val root: View = inflater.inflate(R.layout.fragment_cart, container, false)
-        emptyTxt = root.findViewById(R.id.cart_empty)
+        emptyBasket  = root.findViewById(R.id.cart_empty)
         recyclerView = root.findViewById(R.id.cart_recycler)
 
         if (UiUtils.isTablet(requireActivity())) {
+            //in Tablets the scrolling of Basket's RecyclerView is Vertical
             val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
             recyclerView!!.layoutManager = mLayoutManager
             recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart), UiUtils.dpToPx(requireActivity(),10), true))
             recyclerView!!.itemAnimator = DefaultItemAnimator()
         }else{
+
           if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+              //in PORTRAIT Orientation the scrolling of Basket's RecyclerView is Vertical
               val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
               recyclerView!!.layoutManager = mLayoutManager
               recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart),  UiUtils.dpToPx(requireActivity(),10), true))
               recyclerView!!.itemAnimator = DefaultItemAnimator()
+
            } else if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+              //in LANDSCAPE Orientation the scrolling of Basket's RecyclerView is Horizontal
              val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
              recyclerView!!.layoutManager = layoutManager
           }
         }
 
-        adapter = BasketAdapter(requireActivity(), cartList as ArrayList<ProductEntity>)
-        recyclerView!!.adapter = adapter
+        // Create and set the adapter for the RecyclerView.
+        basketAdapter = BasketAdapter(requireActivity(), cartList as ArrayList<ProductEntity>)
+        recyclerView!!.adapter = basketAdapter
+
+        // Change the Font of textViews (FiraFont)
+        val typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/FiraSans-Bold.ttf")
+        emptyBasket!!.typeface = typeface
 
         return root
     }
@@ -69,9 +80,14 @@ class BasketFragment : Fragment() {
         subscribeUi(mCartViewModel.getCartProducts())
     }
 
-    private fun subscribeUi(liveData: LiveData<List<ProductEntity>>) {
-        liveData.observe(viewLifecycleOwner, Observer<List<ProductEntity>> { myProducts: List<ProductEntity>? ->
+    override fun onDestroyView() {
+        basketAdapter = null
+        super.onDestroyView()
+    }
 
+    private fun subscribeUi(liveData: LiveData<List<ProductEntity>>) {
+        // Update the Basket list when the data changes
+        liveData.observe(viewLifecycleOwner, Observer<List<ProductEntity>> { myProducts: List<ProductEntity>? ->
                 if (myProducts != null && myProducts.isNotEmpty()) {
                     cartList!!.clear()
                     for (i in myProducts.indices) {
@@ -79,12 +95,12 @@ class BasketFragment : Fragment() {
                         cartList.add(productEntity)
                     }
                     recyclerView!!.visibility = View.VISIBLE
-                    emptyTxt!!.visibility = View.GONE
-                    adapter!!.notifyDataSetChanged()
+                    emptyBasket!!.visibility = View.GONE
+                    basketAdapter!!.notifyDataSetChanged()
                 } else {
                     cartList!!.clear()
-                    emptyTxt!!.visibility = View.VISIBLE
-                    adapter!!.notifyDataSetChanged()
+                    emptyBasket!!.visibility = View.VISIBLE
+                    basketAdapter!!.notifyDataSetChanged()
                 }
             })
     }

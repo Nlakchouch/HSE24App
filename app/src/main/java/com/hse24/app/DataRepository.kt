@@ -10,6 +10,9 @@ import com.hse24.app.db.entity.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Repository handling the work with Categories, products, Variations, and Basket items.
+ */
 @Singleton
 class DataRepository @Inject constructor(private val database: AppDatabase) {
 
@@ -41,7 +44,7 @@ class DataRepository @Inject constructor(private val database: AppDatabase) {
     }
 
     /**
-     * Get the list of categories from the database and get notified when the data changes.
+     * Get the list of Categories, products, Variations, and Basket items from the database and get notified when the data changes.
      */
     fun getAllCategories(): LiveData<List<CategoryEntity>>{
         return mObservableCategories

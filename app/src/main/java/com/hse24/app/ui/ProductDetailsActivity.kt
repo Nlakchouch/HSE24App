@@ -19,21 +19,25 @@ class ProductDetailsActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-        //Forcing the
+
+        //Forcing the LANDSCAPE Orientation in case of a Tablet
         if (UiUtils.isTablet(this)) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
+
+        //Customizing ActionBar
         initActionBar()
 
         selectedSku = intent.getStringExtra("sku")
 
         val fragmentManager = supportFragmentManager
         if (savedInstanceState != null) {
-            //Restore the fragment's instance
+            //Restore the product detail fragment's instance
             productDetailFragment = fragmentManager.getFragment(savedInstanceState, ProductDetailsFragment.TAG)
             selectedSku = savedInstanceState.getString("sku")
 
         } else {
+            //Add product detail fragment if this is first creation
             productDetailFragment = ProductDetailsFragment.newInstance(selectedSku)
             fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, productDetailFragment!!, ProductDetailsFragment.TAG)

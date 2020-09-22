@@ -23,6 +23,10 @@ class CartViewModel(application: Application) : AndroidViewModel(application) {
         mObservableCartProducts = mRepository.getCartProducts()
     }
 
+    /**
+     * Expose the LiveData Cart or Basket query so the UI can observe it.
+     */
+
     fun getCart(): LiveData<List<CartEntity>>{ return mObservableCart }
 
     fun getCartTotal(): LiveData<SumCart>{ return mObservableCartSum }

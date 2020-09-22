@@ -17,7 +17,7 @@ class BasketActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_basket)
-        //Forcing the
+        //Forcing the LANDSCAPE Orientation in case of a Tablet
         if (UiUtils.isTablet(this)) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
@@ -26,9 +26,10 @@ class BasketActivity : AppCompatActivity() {
 
         val fragmentManager = supportFragmentManager
         if (savedInstanceState != null) {
-            //Restore the fragment's instance
+            //Restore the basket fragment's instance
             basketFragment = fragmentManager.getFragment(savedInstanceState, BasketFragment.TAG)
         } else {
+            //Add basket fragment if this is first creation
             basketFragment = BasketFragment()
             fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, basketFragment!!, BasketFragment.TAG)

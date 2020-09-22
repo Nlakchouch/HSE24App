@@ -1,7 +1,7 @@
 package com.hse24.app
 
 /**
- * Created by LAKCHOUCH NAOUFAL on 01/09/20.
+ * Created by LAKCHOUCH NAOUFAL on 01/09/2020.
  */
 object Config {
 

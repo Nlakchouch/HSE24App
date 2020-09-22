@@ -52,17 +52,17 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
     @Inject
     private lateinit var appExecutors: AppExecutors
 
+    //Adding the call for Categories selection
     override fun onClick(categoryId: Int) {
         selectedCategoryId = categoryId
         changeCatalogue(selectedCategoryId!!)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-       //Forcing the
+       //Forcing the LANDSCAPE Orientation in case of a Tablet
         if (UiUtils.isTablet(this)) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
@@ -72,40 +72,47 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
 
         progressBar = findViewById(R.id.progressBar1)
 
+        //Setting ActionBar and its customization
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         initActionBar()
 
+        //Adding Support for Tablets
         if (findViewById<View?>(R.id.drawer_layout) != null){
+            //Using Navigation Drawer for SmartPhone
             mTwoPanel = false
             drawer  = findViewById(R.id.drawer_layout)
             val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
             drawer.addDrawerListener(toggle)
             toggle.syncState()
         }else{
+            //Using Master/Details flow for Tablet, Run the App on a Tablet to experience the difference
             mTwoPanel = true
         }
 
         if (savedInstanceState != null) {
-            //Restore the fragment's instance
+            //Restore the fragments's instances if this is not the first creation
             categoryFragment = supportFragmentManager.getFragment(savedInstanceState, CategoryListFragment.TAG)
             catalogueFragment = supportFragmentManager.getFragment(savedInstanceState, CatalogueFragment.TAG)
             selectedCategoryId = savedInstanceState.getInt("category")
             Log.v("SavedInstance", "" + selectedCategoryId)
 
         } else {
+            //Add categories list fragment if this is first creation
             categoryFragment = CategoryListFragment()
             supportFragmentManager.beginTransaction()
                 .replace(R.id.category_container, categoryFragment!!, CategoryListFragment.TAG)
                 .commitAllowingStateLoss()
             supportFragmentManager.executePendingTransactions()
+
+            //Loading Categories
             loadCategoriesData()
         }
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
-        //Save the fragment's instance
+        //Save the fragments's instance
         if(categoryFragment != null)
            supportFragmentManager.putFragment(savedInstanceState, CategoryListFragment.TAG, categoryFragment!!)
 
@@ -117,7 +124,7 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
 
     override fun onDestroy() {
         super.onDestroy()
-
+        //Cancel Retrofit Requests if it's running
         if (categoriesCall != null) {
             categoriesCall!!.cancel()
         }
@@ -134,7 +141,7 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
         if(!mTwoPanel)
         drawer.closeDrawer(GravityCompat.START)
 
-        //Creating and adding the CurrencyListFragment to CurrencyActivity
+        //Creating and adding the CatalogueFragment to MainActivity
         catalogueFragment = CatalogueFragment.newInstance(idCategory,mTwoPanel)
         supportFragmentManager.beginTransaction()
             .replace(R.id.catalogue_container, catalogueFragment!!, CatalogueFragment.TAG)

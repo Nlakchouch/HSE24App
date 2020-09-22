@@ -9,6 +9,9 @@ import kotlin.math.roundToInt
 
 object UiUtils {
 
+    /**
+     * Showing SnackBar with a specific message
+     */
     fun showSnackBar(context: FragmentActivity, msg: String){
         val snackbar = Snackbar.make(
             context.findViewById(android.R.id.content),
@@ -16,6 +19,9 @@ object UiUtils {
         snackbar.show()
     }
 
+    /**
+     * Used for supporting Tablets and Big screen devices
+     */
     fun isTablet(context: Context): Boolean {
         return context.resources.getBoolean(R.bool.is_tablet)
     }
