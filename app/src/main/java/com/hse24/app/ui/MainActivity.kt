@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
     private var categoryFragment: Fragment? = null
     private var catalogueFragment: Fragment? = null
 
+    var categoriesCall: Call<CategoryContainer>? = null
+
     private lateinit var mDatabase: AppDatabase
     @Inject
     private lateinit var appExecutors: AppExecutors
@@ -113,6 +115,14 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
         savedInstanceState.putInt("category", selectedCategoryId!!)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (categoriesCall != null) {
+            categoriesCall!!.cancel();
+        }
+    }
+
     private fun initActionBar() {
         val actionBar = supportActionBar ?: return
         actionBar.setDisplayShowTitleEnabled(false)
@@ -136,10 +146,10 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
     private fun loadCategoriesData() {
 
         val apiService: ApiInterface = ApiClient.getClient()!!.create(ApiInterface::class.java)
-        val call: Call<CategoryContainer> = apiService.getHSE24Categories()
+        categoriesCall = apiService.getHSE24Categories()
         progressBar.visibility = View.VISIBLE
 
-        call.enqueue(object : Callback<CategoryContainer> {
+        categoriesCall!!.enqueue(object : Callback<CategoryContainer> {
             override fun onResponse(call: Call<CategoryContainer>, response: Response<CategoryContainer>) {
                 Log.v(TAG, "" + response.code())
                 progressBar.visibility = View.GONE

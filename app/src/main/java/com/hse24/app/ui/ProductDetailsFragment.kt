@@ -71,9 +71,11 @@ class ProductDetailsFragment : Fragment() {
     private var webView: WebView? = null
     private var mAdapter: ImagesAdapter? = null
     private var productEntity: ProductEntity? = null
+    private var imageUriEntities: MutableList<ImageUriEntity> = mutableListOf()
 
     private var mDatabase: AppDatabase? = null
     private val pagerSnapHelper = PagerSnapHelper()
+    var productCall: Call<ProductContainer>? = null
 
     @Inject
     private lateinit var appExecutors: AppExecutors
@@ -127,6 +129,9 @@ class ProductDetailsFragment : Fragment() {
         recyclerView!!.layoutManager = layoutManager
         pagerSnapHelper.attachToRecyclerView(recyclerView)
 
+        mAdapter = ImagesAdapter(requireActivity(), imageUriEntities)
+        recyclerView!!.adapter = mAdapter
+
         applyFont()
         loadProductData()
 
@@ -138,13 +143,17 @@ class ProductDetailsFragment : Fragment() {
 
         val productDetailViewModel: ProductDetailViewModel = ViewModelProvider(this).get(ProductDetailViewModel::class.java)
         productDetailViewModel.setQuery(selectedSku!!)
+
         subscribeUi(productDetailViewModel.getProductDetails(),
-                    productDetailViewModel.getImageUris(),
                     productDetailViewModel.getCartByProduct())
+
+        subscribeVariationsUi(productDetailViewModel.gatVariations(),
+                              productDetailViewModel.getImageUris())
 
         Handler(Looper.getMainLooper()).postDelayed({
                 setupBadge(productDetailViewModel.getCartTotal())
         }, 300)
+
 
         cartButton!!.setOnClickListener {
 
@@ -183,8 +192,15 @@ class ProductDetailsFragment : Fragment() {
         actionView.setOnClickListener { startActivity(Intent(activity, BasketActivity::class.java)) }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (productCall != null) {
+            productCall!!.cancel();
+        }
+    }
+
     private fun subscribeUi(liveData: LiveData<ProductEntity>,
-                            liveImageData: LiveData<List<ImageUriEntity>>,
                             liveCartData: LiveData<CartEntity>) {
 
         liveData.observe(viewLifecycleOwner, Observer<ProductEntity> { myProduct: ProductEntity? ->
@@ -240,20 +256,6 @@ class ProductDetailsFragment : Fragment() {
                 }
             })
 
-        liveImageData.observe(viewLifecycleOwner, Observer<List<ImageUriEntity?>> { productImages: List<ImageUriEntity?> ->
-
-                if (productImages.isNotEmpty()) {
-                    mAdapter = ImagesAdapter(requireActivity(), productImages as List<ImageUriEntity>)
-                    recyclerView!!.adapter = mAdapter
-                    if (productImages.size > 1) {
-                        indicator!!.visibility = View.VISIBLE
-                        indicator!!.attachToRecyclerView(recyclerView!!, pagerSnapHelper)
-                    } else {
-                        indicator!!.visibility = View.GONE
-                    }
-                }
-            })
-
         liveCartData.observe(viewLifecycleOwner, Observer<CartEntity> { cartEntity: CartEntity? ->
                 if (cartEntity != null) {
                     cartButton!!.text = getString(R.string.already_added)
@@ -264,6 +266,45 @@ class ProductDetailsFragment : Fragment() {
                     cartButton!!.isEnabled = true
                 }
             })
+    }
+
+    private fun subscribeVariationsUi(liveVariationsData: LiveData<List<VariationEntity>>,
+                                      liveImageData: LiveData<List<ImageUriEntity>>){
+
+        liveVariationsData.observe(viewLifecycleOwner, Observer<List<VariationEntity>>{ variations: List<VariationEntity> ->
+            if (variations.isNotEmpty()) {
+                imageUriEntities!!.clear()
+                for (i in variations.indices) {
+                    val imageEntity = ImageUriEntity(variations[i].sku, variations[i].imageUri)
+                    imageUriEntities.add(imageEntity)
+                }
+                if (imageUriEntities.size > 1) {
+                    indicator!!.visibility = View.VISIBLE
+                    indicator!!.attachToRecyclerView(recyclerView!!, pagerSnapHelper)
+                } else {
+                    indicator!!.visibility = View.GONE
+                }
+                mAdapter!!.notifyDataSetChanged()
+            }else{
+
+                liveImageData.observe(viewLifecycleOwner, Observer<List<ImageUriEntity>> { productImages: List<ImageUriEntity?> ->
+                    if (productImages.isNotEmpty()) {
+                        imageUriEntities!!.clear()
+
+                        for (i in productImages.indices) {
+                            imageUriEntities.add(productImages[i]!!)
+                        }
+                        if (imageUriEntities.size > 1) {
+                            indicator!!.visibility = View.VISIBLE
+                            indicator!!.attachToRecyclerView(recyclerView!!, pagerSnapHelper)
+                        } else {
+                            indicator!!.visibility = View.GONE
+                        }
+                    }
+                    mAdapter!!.notifyDataSetChanged()
+                })
+            }
+        })
     }
 
     private fun setupBadge(liveSumCartData: LiveData<SumCart>) {
@@ -285,9 +326,9 @@ class ProductDetailsFragment : Fragment() {
     private fun loadProductData() {
         progressBar!!.visibility = View.VISIBLE
         val apiService: ApiInterface = ApiClient.getClient()!!.create(ApiInterface::class.java)
-        val call: Call<ProductContainer> = apiService.getProductDetails(selectedSku!!)
+        productCall = apiService.getProductDetails(selectedSku!!)
 
-        call.enqueue(object : Callback<ProductContainer> {
+        productCall!!.enqueue(object : Callback<ProductContainer> {
             override fun onResponse(call: Call<ProductContainer>, response: Response<ProductContainer>) {
                 progressBar!!.visibility = View.INVISIBLE
 

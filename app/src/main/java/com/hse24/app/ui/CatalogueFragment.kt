@@ -34,10 +34,7 @@ import com.hse24.app.db.entity.ImageUriEntity
 import com.hse24.app.db.entity.ProductEntity
 import com.hse24.app.restApi.ApiClient
 import com.hse24.app.restApi.ApiInterface
-import com.hse24.app.restApi.model.CatalogueContainer
-import com.hse24.app.restApi.model.Filter
-import com.hse24.app.restApi.model.Paging
-import com.hse24.app.restApi.model.Product
+import com.hse24.app.restApi.model.*
 import com.hse24.app.utils.AppUtils
 import com.hse24.app.utils.GridSpacingItemDecoration
 import com.hse24.app.utils.UiUtils
@@ -68,6 +65,8 @@ class CatalogueFragment : Fragment() {
 
     private var paging: Paging? = null
     private var filter: Filter? = null
+
+    var catalogueCall: Call<CatalogueContainer>? = null
 
     @Inject
     private lateinit var appExecutors: AppExecutors
@@ -199,6 +198,14 @@ class CatalogueFragment : Fragment() {
         actionView.setOnClickListener { startActivity(Intent(activity, BasketActivity::class.java)) }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (catalogueCall != null) {
+            catalogueCall!!.cancel();
+        }
+    }
+
     private fun subscribeUi(
         liveData: LiveData<List<ProductEntity>>,
         liveCategoryData: LiveData<CategoryEntity>,
@@ -255,9 +262,8 @@ class CatalogueFragment : Fragment() {
         progressBar!!.visibility = View.VISIBLE
         val apiService: ApiInterface = ApiClient.getClient()!!.create(ApiInterface::class.java)
        // val call: Call<CatalogueContainer> = apiService.getCatalogue(selectedCategory)
-        val call: Call<CatalogueContainer> = apiService.getCataloguePaging(selectedCategory,pageNum)
-
-        call.enqueue(object : Callback<CatalogueContainer> {
+        catalogueCall = apiService.getCataloguePaging(selectedCategory,pageNum)
+        catalogueCall!!.enqueue(object : Callback<CatalogueContainer> {
             override fun onResponse(call: Call<CatalogueContainer>, response: Response<CatalogueContainer>) {
                 progressBar!!.visibility = View.INVISIBLE
 

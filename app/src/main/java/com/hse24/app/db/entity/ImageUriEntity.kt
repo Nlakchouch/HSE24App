@@ -10,7 +10,7 @@ data class ImageUriEntity (
     var productSku: String? = "",
     var imageUri: String? = ""
 ) {
-    constructor(productSku: String, imageUri: String) : this(0, productSku, imageUri) {
+    constructor(productSku: String, imageUri: String?) : this(0, productSku, imageUri) {
         this.productSku = productSku
         this.imageUri = imageUri
     }
