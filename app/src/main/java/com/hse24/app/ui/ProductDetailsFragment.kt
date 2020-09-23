@@ -282,13 +282,7 @@ class ProductDetailsFragment : Fragment() {
                     val imageEntity = ImageUriEntity(variations[i].sku, variations[i].imageUri)
                     imageUriEntities.add(imageEntity)
                 }
-                if (imageUriEntities.size > 1) {
-                    indicator!!.visibility = View.VISIBLE
-                    indicator!!.attachToRecyclerView(recyclerView!!, pagerSnapHelper)
-                } else {
-                    indicator!!.visibility = View.GONE
-                }
-                imagesAdapter!!.notifyDataSetChanged()
+                notifyImagesData()
             }else{
                 // Update the product SlideShow when there are no variations and the data changes
                 liveImageData.observe(viewLifecycleOwner, Observer<List<ImageUriEntity>> { productImages: List<ImageUriEntity?> ->
@@ -297,13 +291,7 @@ class ProductDetailsFragment : Fragment() {
                         for (i in productImages.indices) {
                             imageUriEntities.add(productImages[i]!!)
                         }
-                        if (imageUriEntities.size > 1) {
-                            indicator!!.visibility = View.VISIBLE
-                            indicator!!.attachToRecyclerView(recyclerView!!, pagerSnapHelper)
-                        } else {
-                            indicator!!.visibility = View.GONE
-                        }
-                        imagesAdapter!!.notifyDataSetChanged()
+                        notifyImagesData()
                     }
                 })
             }
@@ -325,6 +313,16 @@ class ProductDetailsFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun notifyImagesData(){
+        if (imageUriEntities.size > 1) {
+            indicator!!.visibility = View.VISIBLE
+            indicator!!.attachToRecyclerView(recyclerView!!, pagerSnapHelper)
+        } else {
+            indicator!!.visibility = View.GONE
+        }
+        imagesAdapter!!.notifyDataSetChanged()
     }
 
     private fun loadProductData() {

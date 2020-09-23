@@ -33,6 +33,7 @@ class BasketFragment : Fragment() {
     private var recyclerView: RecyclerView? = null
     private var emptyBasket: TextView? = null
     private var basketAdapter: BasketAdapter? = null
+    private var mLayoutManager: RecyclerView.LayoutManager? = null
     private val cartList: MutableList<ProductEntity>? = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,7 +44,7 @@ class BasketFragment : Fragment() {
 
         if (UiUtils.isTablet(requireActivity())) {
             //in Tablets the scrolling of Basket's RecyclerView is Vertical
-            val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
+            mLayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
             recyclerView!!.layoutManager = mLayoutManager
             recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart), UiUtils.dpToPx(requireActivity(),10), true))
             recyclerView!!.itemAnimator = DefaultItemAnimator()
@@ -51,7 +52,7 @@ class BasketFragment : Fragment() {
 
           if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
               //in PORTRAIT Orientation the scrolling of Basket's RecyclerView is Vertical
-              val mLayoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
+              mLayoutManager = GridLayoutManager(activity, resources.getInteger(R.integer.span_count_cart))
               recyclerView!!.layoutManager = mLayoutManager
               recyclerView!!.addItemDecoration(GridSpacingItemDecoration(resources.getInteger(R.integer.span_count_cart),  UiUtils.dpToPx(requireActivity(),10), true))
               recyclerView!!.itemAnimator = DefaultItemAnimator()

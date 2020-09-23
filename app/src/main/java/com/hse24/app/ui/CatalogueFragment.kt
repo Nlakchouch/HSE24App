@@ -61,6 +61,7 @@ class CatalogueFragment : Fragment() {
 
     private var catalogueAdapter: CatalogueAdapter? = null
     private var filterAdapter: FilterAdapter? = null
+    private var gridManager: RecyclerView.LayoutManager? = null
     private var mDatabase: AppDatabase? = null
 
     private var paging: Paging? = null
@@ -109,10 +110,10 @@ class CatalogueFragment : Fragment() {
 
         if(twoPanel){
             //in Tablets the scrolling of Catalogue's recycleView is Vertical
-            val mLayoutManager = GridLayoutManager(activity, resources.getInteger(
+            gridManager = GridLayoutManager(activity, resources.getInteger(
                     R.integer.span_count
                 ))
-            recyclerView!!.layoutManager = mLayoutManager
+            recyclerView!!.layoutManager = gridManager
             recyclerView!!.addItemDecoration(
                 GridSpacingItemDecoration(resources.getInteger(R.integer.span_count), UiUtils.dpToPx(requireActivity(), 10), true))
             recyclerView!!.itemAnimator = DefaultItemAnimator()
@@ -134,23 +135,18 @@ class CatalogueFragment : Fragment() {
 
           if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
               //in PORTRAIT Orientation the scrolling of Catalogue's recycleView is Vertical
-              val mLayoutManager = GridLayoutManager(activity, resources.getInteger(
+              gridManager = GridLayoutManager(activity, resources.getInteger(
                       R.integer.span_count
                   ))
-              recyclerView!!.layoutManager = mLayoutManager
+              recyclerView!!.layoutManager = gridManager
               recyclerView!!.addItemDecoration(
-                  GridSpacingItemDecoration(resources.getInteger(R.integer.span_count), UiUtils.dpToPx(requireActivity(), 10), true)
-              )
+                  GridSpacingItemDecoration(resources.getInteger(R.integer.span_count), UiUtils.dpToPx(requireActivity(), 10), true))
               recyclerView!!.itemAnimator = DefaultItemAnimator()
 
               recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                   override fun onScrolled(@NonNull recyclerView: RecyclerView, dx: Int, dy: Int) {
                       super.onScrolled(recyclerView, dx, dy)
                       if (!recyclerView.canScrollVertically(1)) { //1 for down
-                          /**
-                           * Implementing loading when scrolling to the bottom of the RecyclerView
-                          The infinite loading is based on the number of pages of each category *
-                           **/
                           if (paging != null && paging!!.numPages > 1 && paging!!.numPages != paging!!.page) {
                               loadCatalogueData(paging!!.page + 1)
                           }
@@ -162,16 +158,12 @@ class CatalogueFragment : Fragment() {
               //in LANDSCAPE Orientation the scrolling of Catalogue's recycleView is Horizontal
               categoryTxt!!.visibility = View.GONE
               filtersRecycler!!.visibility = View.GONE
-              val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-              recyclerView!!.layoutManager = layoutManager
+              gridManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+              recyclerView!!.layoutManager = gridManager
               recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                   override fun onScrolled(@NonNull recyclerView: RecyclerView, dx: Int, dy: Int) {
                       super.onScrolled(recyclerView, dx, dy)
                       if (!recyclerView.canScrollHorizontally(1)) { //1 for down
-                          /**
-                           * Implementing loading when scrolling to the bottom of the RecyclerView
-                          The infinite loading is based on the number of pages of each category *
-                           **/
                           if (paging != null && paging!!.numPages > 1 && paging!!.numPages != paging!!.page) {
                               loadCatalogueData(paging!!.page + 1)
                           }
