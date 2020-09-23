@@ -20,6 +20,7 @@
     <!-- Categories List Dimensions -->
     <dimen name="thumbnail_size">30dp</dimen>
     <dimen name="thumbnail_size_big">35dp</dimen>
+    <dimen name="thumbnail_size_small">20dp</dimen>
 
     <!-- Card Dimensions -->
     <dimen name="card_margin">5dp</dimen>

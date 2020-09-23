@@ -54,7 +54,7 @@ class BasketAdapter(private val mContext: Context, private val basketList: List<
         holder.name.text  = catalogue.nameShort
         holder.price.text = "%s %.2f".format(mContext.getString(R.string.euro), catalogue.price)
 
-        if (catalogue.referencePrice != null && catalogue.referencePrice > 0) {
+        if (catalogue.referencePrice > 0) {
             holder.oldPrice.text = "%s %.2f".format(mContext.getString(R.string.euro), catalogue.referencePrice)
             holder.oldPrice.paintFlags = holder.oldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {

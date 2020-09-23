@@ -284,7 +284,7 @@ class CatalogueFragment : Fragment() {
         // Update the number of items in Cart when the data changes
         liveData.observe(this.viewLifecycleOwner, Observer<SumCart> { sumCart: SumCart ->
             if (textCartItemCount != null) {
-                if (sumCart.total === 0) {
+                if (sumCart.total == 0) {
                     textCartItemCount!!.visibility = View.GONE
                 } else {
                     textCartItemCount!!.text = sumCart.total.toString()
