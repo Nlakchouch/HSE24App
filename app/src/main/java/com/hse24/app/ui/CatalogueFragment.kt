@@ -234,6 +234,7 @@ class CatalogueFragment : Fragment() {
         super.onDestroy()
         catalogueAdapter = null
         filterAdapter = null
+        //Cancel Retrofit Requests if it's running
         if (catalogueCall != null) {
             catalogueCall!!.cancel()
         }
@@ -283,6 +284,7 @@ class CatalogueFragment : Fragment() {
     private fun setupBadge(liveData: LiveData<SumCart>) {
         // Update the number of items in Cart when the data changes
         liveData.observe(this.viewLifecycleOwner, Observer<SumCart> { sumCart: SumCart ->
+            Log.v(TAG, "CartSum " + sumCart.total)
             if (textCartItemCount != null) {
                 if (sumCart.total == 0) {
                     textCartItemCount!!.visibility = View.GONE

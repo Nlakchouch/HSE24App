@@ -17,13 +17,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/category_container"
             android:layout_width="@dimen/category_list_width"
             android:layout_height="match_parent"
             />
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/catalogue_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

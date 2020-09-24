@@ -198,7 +198,7 @@ class ProductDetailsFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-
+        //Cancel Retrofit Requests if it's running
         if (productCall != null) {
             productCall!!.cancel()
         }

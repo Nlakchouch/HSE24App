@@ -76,7 +76,6 @@
             android:layout_height="@dimen/order_number_height"
             android:background="@color/pink"
             android:textColor="@android:color/white"
-            android:maxLines="1"
             android:textAlignment="center"
             android:text="@string/order"
             android:textSize="@dimen/medium_size_text" />
@@ -89,7 +88,6 @@
             android:layout_marginEnd="@dimen/medium_size_margin"
             android:layout_marginTop="@dimen/medium_size_margin"
             android:textColor="@color/brand_color"
-            android:maxLines="1"
             android:textSize="@dimen/medium_size_text" />
 
         <TextView

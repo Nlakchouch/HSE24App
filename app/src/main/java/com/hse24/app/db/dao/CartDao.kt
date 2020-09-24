@@ -22,7 +22,7 @@ interface CartDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(cartEntity: CartEntity)
 
-    @Query("SELECT SUM(quantity) as total FROM Cart")
+    @Query("SELECT SUM(IFNULL(quantity,0)) as total FROM Cart")
     fun loadCartTotal(): LiveData<SumCart>
 
     @Query("SELECT * FROM Products inner join Cart on Products.sku = Cart.sku")

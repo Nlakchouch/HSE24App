@@ -78,7 +78,6 @@
             android:layout_marginEnd="@dimen/large_size_margin"
             android:layout_marginTop="@dimen/medium_size_margin"
             android:textColor="@color/brand_color"
-            android:maxLines="1"
             android:textSize="@dimen/medium_size_text" />
 
         <TextView
@@ -88,7 +87,6 @@
             android:layout_marginStart="@dimen/large_size_margin"
             android:layout_marginEnd="@dimen/large_size_margin"
             android:layout_marginTop="@dimen/small_size_margin"
-            android:maxLines="1"
             android:textColor="@color/name_color"
             android:textSize="@dimen/large_size_text" />
 
