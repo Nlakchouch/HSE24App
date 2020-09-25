@@ -137,9 +137,6 @@ class ProductDetailsFragment : Fragment() {
         // Change the Font of textViews (FiraFont)
         applyFont()
 
-        //Loading Product date for specific product SKU
-        loadProductData()
-
         return root
     }
 
@@ -178,11 +175,15 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState.putString("Sku", selectedSku)
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (savedInstanceState != null) {
             selectedSku = savedInstanceState.getString("Sku")
             Log.v("SavedInstance", selectedSku!!)
+        }else{
+            //Loading Product date for specific product SKU
+            loadProductData()
         }
     }
 

@@ -183,10 +183,6 @@ class CatalogueFragment : Fragment() {
         categoryTxt!!.typeface = typeface
         emptyCatalogue!!.typeface = typeface
 
-        //Loading catalogue date for specific category ID
-        if (paging == null)
-            loadCatalogueData(1)
-
         return root
     }
 
@@ -205,18 +201,29 @@ class CatalogueFragment : Fragment() {
         Handler(Looper.getMainLooper()).postDelayed({
             setupBadge(mCartViewModel.getCartTotal())
         }, 300)
+
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
+        if(selectedCategory > 0)
         savedInstanceState.putInt("category", selectedCategory)
+
+        if(paging != null)
+        savedInstanceState.putParcelable("paging", paging)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (savedInstanceState != null) {
             selectedCategory = savedInstanceState.getInt("category")
-            Log.v("SavedInstance", "" + selectedCategory)
+            paging = savedInstanceState.getParcelable("paging")
+            Log.v("SavedInstance", "" + paging!!.numPages)
+        }else{
+            //Loading catalogue date for specific category ID
+            if (paging == null){
+                loadCatalogueData(1)
+            }
         }
     }
 
@@ -326,7 +333,8 @@ class CatalogueFragment : Fragment() {
 
                     for (i in products.indices) {
                         val product: Product = products[i]
-                        if (product.status == Config.SELLABLE_STATUS) {
+                        //Adding control on ImageUris size to correct a bug
+                        if (product.status == Config.SELLABLE_STATUS && product.imageUris.isNotEmpty()) {
                             val productEntity = ProductEntity(product, selectedCategory)
                             productEntities.add(productEntity)
 
