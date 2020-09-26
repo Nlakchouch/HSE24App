@@ -2,7 +2,6 @@ package com.hse24.app.ui
 
 import android.content.Intent
 import android.graphics.Paint
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -133,9 +132,6 @@ class ProductDetailsFragment : Fragment() {
         // Create and set the adapter for the RecyclerView.
         imagesAdapter = ImagesAdapter(requireActivity(), imageUriEntities)
         recyclerView!!.adapter = imagesAdapter
-
-        // Change the Font of textViews (FiraFont)
-        applyFont()
 
         return root
     }
@@ -382,21 +378,5 @@ class ProductDetailsFragment : Fragment() {
                 }
             }
         })
-    }
-
-    private fun applyFont() {
-        val typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/FiraSans-Regular.ttf")
-        productDiscount!!.typeface = typeface
-        productBrand!!.typeface = typeface
-        productName!!.typeface = typeface
-        productPrice!!.typeface = typeface
-        productDesc!!.typeface = typeface
-        productOrder!!.typeface = typeface
-        productOldPrice!!.typeface = typeface
-        descriptionLbl!!.typeface = typeface
-        dimensionLbl!!.typeface = typeface
-        productDimensions!!.typeface = typeface
-        productReviews!!.typeface = typeface
-        cartButton!!.typeface = typeface
     }
 }

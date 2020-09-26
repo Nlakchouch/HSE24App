@@ -2,7 +2,6 @@ package com.hse24.app.ui
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -177,11 +176,6 @@ class CatalogueFragment : Fragment() {
         catalogueAdapter = CatalogueAdapter(requireActivity(), productList as ArrayList<ProductEntity>)
         recyclerView!!.adapter = catalogueAdapter
 
-
-        // Change the Font of textViews (FiraFont)
-        val typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/FiraSans-Bold.ttf")
-        categoryTxt!!.typeface = typeface
-        emptyCatalogue!!.typeface = typeface
 
         return root
     }

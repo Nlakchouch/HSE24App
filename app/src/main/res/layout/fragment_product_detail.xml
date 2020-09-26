@@ -42,6 +42,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:textColor="@android:color/white"
+                android:fontFamily="@font/fira_regular"
                 android:paddingStart="@dimen/medium_size_margin"
                 android:paddingEnd="@dimen/medium_size_margin"
                 android:layout_marginTop="@dimen/medium_size_margin"
@@ -66,6 +67,7 @@
             android:layout_height="@dimen/order_number_height"
             android:background="@color/pink"
             android:textColor="@android:color/white"
+            android:fontFamily="@font/fira_regular"
             android:maxLines="1"
             android:text="@string/order"
             android:textSize="@dimen/medium_size_text" />
@@ -78,6 +80,7 @@
             android:layout_marginEnd="@dimen/large_size_margin"
             android:layout_marginTop="@dimen/medium_size_margin"
             android:textColor="@color/brand_color"
+            android:fontFamily="@font/fira_regular"
             android:textSize="@dimen/medium_size_text" />
 
         <TextView
@@ -88,6 +91,7 @@
             android:layout_marginEnd="@dimen/large_size_margin"
             android:layout_marginTop="@dimen/small_size_margin"
             android:textColor="@color/name_color"
+            android:fontFamily="@font/fira_regular"
             android:textSize="@dimen/large_size_text" />
 
         <LinearLayout
@@ -114,6 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/large_size_margin"
                 android:textColor="@color/pink"
+                android:fontFamily="@font/fira_regular"
                 android:visibility="gone"
                 android:textSize="@dimen/price_brand_size" />
 
@@ -128,6 +133,7 @@
             android:layout_marginTop="@dimen/medium_size_margin"
             android:visibility="gone"
             android:textColor="@color/name_color"
+            android:fontFamily="@font/fira_regular"
             android:textSize="@dimen/price_brand_size" />
 
         <TextView
@@ -138,6 +144,7 @@
             android:layout_marginEnd="@dimen/large_size_margin"
             android:layout_marginTop="@dimen/small_size_margin"
             android:textColor="@color/pink"
+            android:fontFamily="@font/fira_regular"
             android:textSize="@dimen/large_size_text" />
 
         <Button
@@ -148,6 +155,7 @@
             android:layout_marginEnd="@dimen/large_size_margin"
             android:layout_marginTop="@dimen/medium_size_margin"
             android:background="@drawable/bg_button"
+            android:fontFamily="@font/fira_regular"
             android:text="@string/add_cart"
             android:textColor="@android:color/white"
             />
@@ -160,6 +168,7 @@
             android:layout_marginEnd="@dimen/large_size_margin"
             android:layout_marginTop="@dimen/medium_size_margin"
             android:textColor="@color/pink"
+            android:fontFamily="@font/fira_regular"
             android:text="@string/description"
             android:textSize="@dimen/large_size_text" />
 
@@ -170,6 +179,7 @@
             android:layout_marginStart="@dimen/large_size_margin"
             android:layout_marginEnd="@dimen/large_size_margin"
             android:textColor="@color/name_color"
+            android:fontFamily="@font/fira_regular"
             android:textSize="@dimen/price_brand_size" />
 
         <TextView
@@ -179,6 +189,7 @@
             android:layout_marginStart="@dimen/large_size_margin"
             android:layout_marginEnd="@dimen/large_size_margin"
             android:textColor="@color/pink"
+            android:fontFamily="@font/fira_regular"
             android:text="@string/details"
             android:textSize="@dimen/large_size_text" />
 
@@ -190,6 +201,7 @@
             android:layout_marginEnd="@dimen/large_size_margin"
             android:layout_marginTop="@dimen/medium_size_margin"
             android:textColor="@color/name_color"
+            android:fontFamily="@font/fira_regular"
             android:visibility="gone"
             android:textSize="@dimen/price_brand_size" />
 

@@ -25,6 +25,7 @@
         android:background="@drawable/badge_background"
         android:gravity="center"
         android:padding="@dimen/badge_margin"
+        android:fontFamily="@font/fira_regular"
         android:textColor="@android:color/white"
         android:visibility="invisible"
         android:textSize="@dimen/small_size_text"/>

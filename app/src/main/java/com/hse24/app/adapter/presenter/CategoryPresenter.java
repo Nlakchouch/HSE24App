@@ -1,7 +1,6 @@
 package com.hse24.app.adapter.presenter;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,21 +27,12 @@ public class CategoryPresenter extends ViewPresenter<CategoryItem> {
     public void initViewPresenter(Context context, ViewGroup parent, Bundle params, View.OnClickListener onClickListener) {
 
         type = (CategoryItem.TYPE) params.getSerializable("type");
-        Typeface typeface  = Typeface.createFromAsset(context.getAssets(), "fonts/FiraSans-Regular.ttf");
-        Typeface typefaceBold  = Typeface.createFromAsset(context.getAssets(), "fonts/FiraSans-Bold.ttf");
         this.view = LayoutInflater.from(context).inflate(getLayout(type), parent, false);
 
         titreView  = view.findViewById(R.id.menu_titre);
         menuToggle = view.findViewById(R.id.menu_toggle);
         this.onClickListener = onClickListener;
 
-        if(type == CategoryItem.TYPE.MAIN){
-           titreView.setTypeface(typefaceBold);
-        }else if(type == CategoryItem.TYPE.TITLE){
-            titreView.setTypeface(typefaceBold);
-        }else if(type == CategoryItem.TYPE.SUB){
-            titreView.setTypeface(typeface);
-        }
     }
 
     @Override

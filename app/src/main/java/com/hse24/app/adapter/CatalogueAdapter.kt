@@ -3,7 +3,6 @@ package com.hse24.app.adapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
-import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -44,7 +43,6 @@ class CatalogueAdapter(private val mContext: Context, private val productList: L
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         val catalogue: ProductEntity = productList[position]
-        val typeface = Typeface.createFromAsset(mContext.assets, "fonts/FiraSans-Regular.ttf")
 
         holder.mView.tag  = position
         holder.brand.text = catalogue.brandNameLong
@@ -71,12 +69,6 @@ class CatalogueAdapter(private val mContext: Context, private val productList: L
             holder.ratingBar.visibility = View.VISIBLE
             holder.ratingBar.rating = catalogue.averageStars.toFloat()
         }
-
-        holder.brand.typeface    = typeface
-        holder.name.typeface     = typeface
-        holder.price.typeface    = typeface
-        holder.oldPrice.typeface = typeface
-        holder.discount.typeface = typeface
 
         // loading album cover using Glide library
         val imgUrl = "%s%s%s".format(Config.HSE24_IMAGE_BASE_URL, catalogue.imageUri, Config.HSE24_IMAGE_PARAM)

@@ -36,6 +36,7 @@
                 android:layout_marginRight="@dimen/medium_size_margin"
                 android:layout_marginTop="@dimen/card_margin"
                 android:textColor="@color/brand_color"
+                android:fontFamily="@font/fira_regular"
                 android:maxLines="1"
                 android:textSize="@dimen/price_brand_size" />
 
@@ -49,6 +50,7 @@
                 android:layout_marginTop="@dimen/card_margin"
                 android:maxLines="1"
                 android:textColor="@color/name_color"
+                android:fontFamily="@font/fira_regular"
                 android:textSize="@dimen/price_brand_size" />
 
             <TextView
@@ -60,6 +62,7 @@
                 android:layout_marginRight="@dimen/medium_size_margin"
                 android:layout_marginTop="@dimen/card_margin"
                 android:textColor="@color/pink"
+                android:fontFamily="@font/fira_regular"
                 android:textSize="@dimen/price_brand_size" />
 
             <TextView
@@ -72,6 +75,7 @@
                 android:layout_marginRight="@dimen/medium_size_margin"
                 android:layout_marginTop="@dimen/card_margin"
                 android:textColor="@color/name_color"
+                android:fontFamily="@font/fira_regular"
                 android:textSize="@dimen/price_brand_size" />
 
             <ImageView

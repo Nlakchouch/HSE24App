@@ -1,7 +1,6 @@
 package com.hse24.app.ui
 
 import android.content.res.Configuration
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,10 +66,6 @@ class BasketFragment : Fragment() {
         // Create and set the adapter for the RecyclerView.
         basketAdapter = BasketAdapter(requireActivity(), cartList as ArrayList<ProductEntity>)
         recyclerView!!.adapter = basketAdapter
-
-        // Change the Font of textViews (FiraFont)
-        val typeface = Typeface.createFromAsset(requireActivity().assets, "fonts/FiraSans-Bold.ttf")
-        emptyBasket!!.typeface = typeface
 
         return root
     }

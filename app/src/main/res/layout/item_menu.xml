@@ -23,6 +23,7 @@
         android:layout_marginStart="@dimen/medium_size_margin"
         android:layout_toEndOf="@id/menu_image"
         android:textColor="@android:color/white"
+        android:fontFamily="@font/fira_bold"
         android:textSize="@dimen/medium_size_text" />
 
     <ImageView

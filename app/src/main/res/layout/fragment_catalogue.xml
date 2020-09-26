@@ -17,6 +17,7 @@
         android:visibility="invisible"
         android:textSize="@dimen/large_size_text"
         android:textColor="@color/black"
+        android:fontFamily="@font/fira_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +32,7 @@
         android:textAlignment="center"
         android:textSize="@dimen/large_size_text"
         android:textColor="@color/black"
+        android:fontFamily="@font/fira_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />

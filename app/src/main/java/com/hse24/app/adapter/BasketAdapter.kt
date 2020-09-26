@@ -2,7 +2,6 @@ package com.hse24.app.adapter
 
 import android.content.Context
 import android.graphics.Paint
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +46,6 @@ class BasketAdapter(private val mContext: Context, private val basketList: List<
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         val catalogue: ProductEntity = basketList[position]
-        val typeface = Typeface.createFromAsset(mContext.assets, "fonts/FiraSans-Regular.ttf")
 
         holder.mView.tag  = position
         holder.brand.text = catalogue.brandNameLong
@@ -60,10 +58,6 @@ class BasketAdapter(private val mContext: Context, private val basketList: List<
         } else {
             holder.oldPrice.text = ""
         }
-        holder.brand.typeface    = typeface
-        holder.name.typeface     = typeface
-        holder.price.typeface    = typeface
-        holder.oldPrice.typeface = typeface
 
         // loading album cover using Glide library
         val imgUrl = "%s%s%s".format(Config.HSE24_IMAGE_BASE_URL, catalogue.imageUri, Config.HSE24_IMAGE_PARAM)
