@@ -14,7 +14,7 @@ import com.hse24.app.db.entity.*
 
 @Database(
     entities = [CategoryEntity::class, ImageUriEntity::class, ProductEntity::class, CartEntity::class, CategoryCountEntity::class, VariationEntity::class],
-    version = 16
+    version = 17
 )
 abstract class AppDatabase : RoomDatabase() {
 

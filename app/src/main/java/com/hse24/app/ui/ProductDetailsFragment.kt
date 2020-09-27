@@ -26,7 +26,6 @@ import com.hse24.app.Config
 import com.hse24.app.R
 import com.hse24.app.adapter.ImagesAdapter
 import com.hse24.app.db.AppDatabase
-import com.hse24.app.db.SumCart
 import com.hse24.app.db.entity.CartEntity
 import com.hse24.app.db.entity.ImageUriEntity
 import com.hse24.app.db.entity.ProductEntity
@@ -68,6 +67,7 @@ class ProductDetailsFragment : Fragment() {
     private var productReviews: TextView? = null
     private var textCartItem: TextView? = null
     private var webView: WebView? = null
+
     private var imagesAdapter: ImagesAdapter? = null
     private var productEntity: ProductEntity? = null
     private var imageUriEntities: MutableList<ImageUriEntity> = mutableListOf()
@@ -149,7 +149,7 @@ class ProductDetailsFragment : Fragment() {
                               productDetailViewModel.getImageUris())
 
         Handler(Looper.getMainLooper()).postDelayed({
-                setupBadge(productDetailViewModel.getCartTotal())
+                setupBadge(productDetailViewModel.getCart())
         }, 300)
 
 
@@ -295,16 +295,15 @@ class ProductDetailsFragment : Fragment() {
         })
     }
 
-    private fun setupBadge(liveSumCartData: LiveData<SumCart>) {
+    private fun setupBadge(liveSumCartData: LiveData<List<CartEntity>>) {
         // Update the number of items in Cart when the data changes
-        liveSumCartData.observe(this.viewLifecycleOwner, Observer<SumCart> { sumCart: SumCart ->
-            Log.v("cartDetails", "" + sumCart.total)
+        liveSumCartData.observe(this.viewLifecycleOwner, Observer<List<CartEntity>> { sumCart: List<CartEntity> ->
             requireActivity().runOnUiThread {
                 if (textCartItem != null) {
-                    if (sumCart.total == 0) {
+                    if (sumCart.isEmpty()) {
                         textCartItem!!.visibility = View.GONE
                     } else {
-                        textCartItem!!.text = java.lang.String.valueOf(sumCart.total)
+                        textCartItem!!.text = sumCart.size.toString()
                         textCartItem!!.visibility = View.VISIBLE
                     }
                 }

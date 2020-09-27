@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
-import com.hse24.app.db.SumCart
 import com.hse24.app.db.entity.CartEntity
 import com.hse24.app.db.entity.ProductEntity
 
@@ -21,9 +20,6 @@ interface CartDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(cartEntity: CartEntity)
-
-    @Query("SELECT SUM(IFNULL(quantity,0)) as total FROM Cart")
-    fun loadCartTotal(): LiveData<SumCart>
 
     @Query("SELECT * FROM Products inner join Cart on Products.sku = Cart.sku")
     fun loadCartProducts(): LiveData<List<ProductEntity>>

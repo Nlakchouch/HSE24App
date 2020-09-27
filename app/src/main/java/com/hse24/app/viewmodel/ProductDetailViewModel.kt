@@ -8,7 +8,6 @@ import androidx.lifecycle.Transformations
 
 import com.hse24.app.DataRepository
 import com.hse24.app.HSE24App
-import com.hse24.app.db.SumCart
 import com.hse24.app.db.entity.CartEntity
 import com.hse24.app.db.entity.ImageUriEntity
 import com.hse24.app.db.entity.ProductEntity
@@ -22,7 +21,7 @@ class ProductDetailViewModel(application: Application, private val mSavedStateHa
     private val mObservableImageUris: LiveData<List<ImageUriEntity>>
     private val mObservableCartByProduct: LiveData<CartEntity>
     private val mObservableVariations: LiveData<List<VariationEntity>>
-    private val mObservableCartSum: LiveData<SumCart>
+    private val mObservableCart: LiveData<List<CartEntity>>
 
     companion object {
         private const val QUERY_KEY = "QUERY"
@@ -50,7 +49,7 @@ class ProductDetailViewModel(application: Application, private val mSavedStateHa
             mRepository.getProductVariation(sku!!)
         }
 
-        mObservableCartSum = mRepository.getCartTotal()
+        mObservableCart = mRepository.getCart()
     }
 
     fun setQuery(sku: String) {
@@ -66,7 +65,7 @@ class ProductDetailViewModel(application: Application, private val mSavedStateHa
 
     fun getCartByProduct(): LiveData<CartEntity> { return mObservableCartByProduct}
 
-    fun getCartTotal() : LiveData<SumCart> { return mObservableCartSum }
+    fun getCart() : LiveData<List<CartEntity>> { return mObservableCart }
 
     fun gatVariations() : LiveData<List<VariationEntity>> { return mObservableVariations}
 }

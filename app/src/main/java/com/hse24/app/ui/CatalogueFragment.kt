@@ -26,11 +26,7 @@ import com.hse24.app.R
 import com.hse24.app.adapter.CatalogueAdapter
 import com.hse24.app.adapter.FilterAdapter
 import com.hse24.app.db.AppDatabase
-import com.hse24.app.db.SumCart
-import com.hse24.app.db.entity.CategoryCountEntity
-import com.hse24.app.db.entity.CategoryEntity
-import com.hse24.app.db.entity.ImageUriEntity
-import com.hse24.app.db.entity.ProductEntity
+import com.hse24.app.db.entity.*
 import com.hse24.app.restApi.ApiClient
 import com.hse24.app.restApi.ApiInterface
 import com.hse24.app.restApi.model.*
@@ -193,7 +189,7 @@ class CatalogueFragment : Fragment() {
 
         val mCartViewModel: CartViewModel = ViewModelProvider(this).get(CartViewModel::class.java)
         Handler(Looper.getMainLooper()).postDelayed({
-            setupBadge(mCartViewModel.getCartTotal())
+            setupBadge(mCartViewModel.getCart())
         }, 300)
 
     }
@@ -282,17 +278,18 @@ class CatalogueFragment : Fragment() {
             })
     }
 
-    private fun setupBadge(liveData: LiveData<SumCart>) {
+    private fun setupBadge(liveData: LiveData<List<CartEntity>>) {
         // Update the number of items in Cart when the data changes
-        liveData.observe(this.viewLifecycleOwner, Observer<SumCart> { sumCart: SumCart ->
-            Log.v(TAG, "CartSum " + sumCart.total)
+        liveData.observe(this.viewLifecycleOwner, Observer<List<CartEntity>> { sumCart: List<CartEntity> ->
+            requireActivity().runOnUiThread {
             if (textCartItemCount != null) {
-                if (sumCart.total == 0) {
+                if (sumCart.isEmpty()) {
                     textCartItemCount!!.visibility = View.GONE
                 } else {
-                    textCartItemCount!!.text = sumCart.total.toString()
+                    textCartItemCount!!.text = sumCart.size.toString()
                     textCartItemCount!!.visibility = View.VISIBLE
                 }
+            }
             }
         })
     }

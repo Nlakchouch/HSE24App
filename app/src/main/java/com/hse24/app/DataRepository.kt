@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
 import com.hse24.app.db.AppDatabase
-import com.hse24.app.db.SumCart
 import com.hse24.app.db.entity.*
 
 import javax.inject.Inject
@@ -70,17 +69,12 @@ class DataRepository @Inject constructor(private val database: AppDatabase) {
         return database.imageDao().loadImages(sku)
     }
 
-    fun getCart(): LiveData<List<CartEntity>> {
-        return  database.cartDao().loadCart()
-    }
-
-
     fun getCartByProduct(sku: String?): LiveData<CartEntity> {
         return database.cartDao().loadCartByProduct(sku)
     }
 
-    fun getCartTotal() : LiveData<SumCart> {
-        return database.cartDao().loadCartTotal()
+    fun getCart() : LiveData<List<CartEntity>> {
+        return database.cartDao().loadCart()
     }
 
     fun getCartProducts() : LiveData<List<ProductEntity>> {
