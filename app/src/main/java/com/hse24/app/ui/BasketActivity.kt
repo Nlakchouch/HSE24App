@@ -2,6 +2,8 @@ package com.hse24.app.ui
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -22,7 +24,9 @@ class BasketActivity : AppCompatActivity() {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
-        initActionBar()
+        Handler(Looper.getMainLooper()).postDelayed({
+            initActionBar()
+        }, 300)
 
         val fragmentManager = supportFragmentManager
         if (savedInstanceState != null) {

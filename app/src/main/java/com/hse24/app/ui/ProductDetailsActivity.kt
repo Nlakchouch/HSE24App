@@ -2,6 +2,8 @@ package com.hse24.app.ui
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +28,9 @@ class ProductDetailsActivity : AppCompatActivity() {
         }
 
         //Customizing ActionBar
-        initActionBar()
+        Handler(Looper.getMainLooper()).postDelayed({
+            initActionBar()
+        }, 300)
 
         selectedSku = intent.getStringExtra("sku")
 

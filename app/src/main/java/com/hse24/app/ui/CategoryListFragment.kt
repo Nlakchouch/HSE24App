@@ -57,6 +57,31 @@ class CategoryListFragment : Fragment() {
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val root: View = inflater.inflate(R.layout.fragment_category_list, container, false)
+        recyclerView = root.findViewById<View>(R.id.recycler_view) as RecyclerView
+        recyclerView!!.layoutManager = LinearLayoutManager(activity)
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+            val categoryListViewModel: CategoryListViewModel = ViewModelProvider(this).get(CategoryListViewModel::class.java)
+            subscribeUi(categoryListViewModel.getCategories())
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        if(categoryAdapter != null)
+           categoryAdapter!!.onSaveInstanceState(savedInstanceState);
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if(categoryAdapter != null)
+           categoryAdapter!!.onRestoreInstanceState(savedInstanceState);
+    }
+
     override fun onDetach() {
         mCategoryCallback = null
         super.onDetach()
@@ -67,21 +92,8 @@ class CategoryListFragment : Fragment() {
         super.onDestroyView()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root: View = inflater.inflate(R.layout.fragment_category_list, container, false)
-        recyclerView = root.findViewById<View>(R.id.recycler_view) as RecyclerView
-        recyclerView!!.layoutManager = LinearLayoutManager(activity)
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val categoryListViewModel: CategoryListViewModel = ViewModelProvider(this).get(CategoryListViewModel::class.java)
-        subscribeUi(categoryListViewModel.getCategories())
-    }
-
     private fun subscribeUi(liveData: LiveData<List<CategoryEntity>>) {
+        Log.v(TAG,"Creating Categories List")
         // Update the category list when the data changes
         liveData.observe(viewLifecycleOwner, Observer<List<CategoryEntity>> { myCategories: List<CategoryEntity>? ->
                 if (myCategories != null) {
@@ -107,8 +119,8 @@ class CategoryListFragment : Fragment() {
                     }
                     Log.v(TAG, "" + menuItemList.size)
                     // Create and set the adapter for the RecyclerView.
-                    categoryAdapter = CategoryAdapter(activity, menuItemList, onCategoryClickListener)
-                    recyclerView!!.adapter = categoryAdapter
+                     categoryAdapter = CategoryAdapter(activity, menuItemList, onCategoryClickListener)
+                     recyclerView!!.adapter = categoryAdapter
                 }
             })
     }

@@ -21,7 +21,7 @@ interface CartDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(cartEntity: CartEntity)
 
-    @Query("SELECT * FROM Products inner join Cart on Products.sku = Cart.sku")
+    @Query("SELECT Products.* FROM Products inner join Cart on Products.sku = Cart.sku")
     fun loadCartProducts(): LiveData<List<ProductEntity>>
 
     @Query("DELETE FROM Cart where sku = :sku")

@@ -2,6 +2,8 @@ package com.hse24.app.ui
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
@@ -75,7 +77,9 @@ class MainActivity : AppCompatActivity(), CategoryListFragment.OnCategoryListene
         //Setting ActionBar and its customization
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        initActionBar()
+        Handler(Looper.getMainLooper()).postDelayed({
+            initActionBar()
+        }, 300)
 
         //Adding Support for Tablets
         if (findViewById<View?>(R.id.drawer_layout) != null){
