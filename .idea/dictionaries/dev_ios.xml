@@ -1,6 +1,10 @@
 <component name="ProjectDictionaryState">
   <dictionary name="dev-ios">
     <words>
+      <w>expandablerecyclerview</w>
+      <w>gson</w>
+      <w>okhttp</w>
+      <w>rvgenadapter</w>
       <w>snackbar</w>
     </words>
   </dictionary>
