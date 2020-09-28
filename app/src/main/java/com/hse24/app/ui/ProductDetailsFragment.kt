@@ -341,7 +341,7 @@ class ProductDetailsFragment : Fragment() {
                     }
 
                     for (j in productDetails.variations.indices) {
-                        if(productDetails.variations[j].status.equals(Config.SELLABLE_STATUS)){
+                        if(productDetails.variations[j].status.equals(Config.SELLABLE_STATUS) && productDetails.variations[j].imageUris.isNotEmpty()){
                            val variationEntity = VariationEntity(productDetails.sku, productDetails.variations[j])
                            variationEntities.add(variationEntity)
                         }
