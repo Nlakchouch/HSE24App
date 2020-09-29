@@ -53,7 +53,7 @@ Project is created with:
 
 * PHONE-LANDSCAPE
 
-<img src="ScreenShots/5.png" width="200"> <img src="ScreenShots/4.png" width="200"> <img src="ScreenShots/7.png" width="200"> <img src="ScreenShots/13.png" width="200">
+<img src="ScreenShots/5.png" width="300"> <img src="ScreenShots/4.png" width="300"> <img src="ScreenShots/7.png" width="300"> <img src="ScreenShots/13.png" width="300">
 
 * TABLET
 
