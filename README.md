@@ -1,7 +1,5 @@
 # HSE24 Interview
 
-<img src="screenshots/hse24_design_logo.png" width="180">
-
 HSE24 App is a simple E-Commerce App with a professional and clean code built using kotlin.
 
 ## Table Of Content
@@ -31,7 +29,7 @@ HSE24 App support the ability to add products to a local basket using [Room Data
 
 ### Great Design
 
-Design inspiration from the original HSE24 App
+Design inspiration from the original HSE24 WebSite
 
 ## Technologies Used
 
@@ -43,18 +41,18 @@ Project is created with:
 * [Retrofit 2.5.0](https://github.com/square/retrofit)
 * [RxJava 2.5.0](https://github.com/ReactiveX/RxAndroid)
 * [Room Database 2.2.5](https://developer.android.com/jetpack/androidx/releases/room)
-* [Coroutines 1.3.5](https://developer.android.com/jetpack/androidx/releases/room)
-* [Pagination Infinite Scrolling 2.1.0](https://github.com/mirmilad/paging-coroutine)
 * [Gson 2.8.5](https://github.com/google/gson)
 * [Glide 4.8.0](https://github.com/bumptech/glide)
-* [Material Rating Bar 1.4.0](https://github.com/zhanghai/MaterialRatingBar)
-* [Circle Image View 3.1.0](https://github.com/hdodenhof/CircleImageView)
 * [SnackBar 1.2.0](https://material.io/components/snackbars)
 
 ## Screenshots
 
-<img src="screenshots/1.png" width="200"> <img src="screenshots/2.png" width="200"> <img src="screenshots/3.png" width="200"> <img src="screenshots/4.png" width="200">
+<img src="ScreenShots/1.png" width="200"> <img src="ScreenShots/2.png" width="200"> <img src="ScreenShots/3.png" width="200"> <img src="ScreenShots/4.png" width="200">
 
-<img src="screenshots/5.png" width="200"> <img src="screenshots/6.png" width="200"> <img src="screenshots/7.png" width="200">
+<img src="ScreenShots/5.png" width="200"> <img src="ScreenShots/6.png" width="200"> <img src="ScreenShots/7.png" width="200">
+
+<img src="ScreenShots/8.png" width="200"> <img src="ScreenShots/9.png" width="200"> <img src="ScreenShots/10.png" width="200"> <img src="ScreenShots/11.png" width="200">
+
+<img src="ScreenShots/12.png" width="200"> <img src="ScreenShots/13.png" width="200"> <img src="ScreenShots/14.png" width="200">
 
 
