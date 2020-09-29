@@ -35,7 +35,7 @@ Design inspiration from the original HSE24 WebSite
 
 Project is created with:
 
-* [Kotlin 1.3.41](https://github.com/kotlin)
+* [Kotlin 1.3.72](https://github.com/kotlin)
 * [Model View AndroidViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
 * [LiveData 2.2.0](https://developer.android.com/topic/libraries/architecture/livedata)
 * [Retrofit 2.9.0](https://github.com/square/retrofit)
@@ -57,7 +57,8 @@ Project is created with:
 
 * TABLET
 
-<img src="ScreenShots/3.png" width="256"> <img src="ScreenShots/8.png" width="256"> <img src="ScreenShots/9.png" width="256"> <img src="ScreenShots/10.png" width="256"> 
-<img src="ScreenShots/11.png" width="256"> <img src="ScreenShots/14.png" width="256">
+<img src="ScreenShots/3.png" width="512"> <img src="ScreenShots/8.png" width="512"> 
+<img src="ScreenShots/9.png" width="512"> <img src="ScreenShots/10.png" width="512"> 
+<img src="ScreenShots/11.png" width="512"> <img src="ScreenShots/14.png" width="512">
 
 
