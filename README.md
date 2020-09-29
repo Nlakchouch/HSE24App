@@ -53,12 +53,16 @@ Project is created with:
 
 * PHONE-LANDSCAPE
 
-<img src="ScreenShots/5.png" width="300"> <img src="ScreenShots/4.png" width="300"> <img src="ScreenShots/7.png" width="300"> <img src="ScreenShots/13.png" width="300">
+<img src="ScreenShots/5.png" width="300">     <img src="ScreenShots/4.png" width="300"> 
+<img src="ScreenShots/7.png" width="300">     <img src="ScreenShots/13.png" width="300">
 
 * TABLET
 
-<img src="ScreenShots/3.png" width="512"> <img src="ScreenShots/8.png" width="512"> 
-<img src="ScreenShots/9.png" width="512"> <img src="ScreenShots/10.png" width="512"> 
-<img src="ScreenShots/11.png" width="512"> <img src="ScreenShots/14.png" width="512">
+    <img src="ScreenShots/3.png" width="512"> 
+    <img src="ScreenShots/8.png" width="512"> 
+    <img src="ScreenShots/9.png" width="512"> 
+    <img src="ScreenShots/10.png" width="512"> 
+    <img src="ScreenShots/11.png" width="512"> 
+    <img src="ScreenShots/14.png" width="512">
 
 
