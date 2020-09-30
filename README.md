@@ -1,6 +1,6 @@
 # HSE24 ANDROID APP
 
-HSE24 App is a simple E-Commerce App with a professional and clean code built using kotlin.
+HSE24 App a native eCommerce App built using kotlin.
 
 ## Table Of Content
 
@@ -11,21 +11,13 @@ HSE24 App is a simple E-Commerce App with a professional and clean code built us
 
 ## General Info
 
-HSE24 support Model–view–viewModel (MVVM) as the architectural design pattern of our project, also it support the REST APIS to retrieve products and categories from the HSE24 WebServer.
+HSE24 support Model–view–AndroidViewModel (MVAVM) as the architectural design pattern of our project.
 
 ## Implemented Tasks
 
 ### REST Interfaces:
 
-HSE24 App support REST Interfaces in order to get category & product information from the WebServer.
-
-### Infinite Scrolling:
-
-HSE24 App support a product Lists with infinite Scrolling using [paging library](https://github.com/mirmilad/paging-coroutine) and it has the ability to get a product detail Page.
-
-### Basket:
-
-HSE24 App support the ability to add products to a local basket using [Room Database library](https://developer.android.com/jetpack/androidx/releases/room). and it support also the ability to delete products from the Basket.
+HSE24 App integrating REST APIS to retrieve products and categories.
 
 ### Great Design
 
